@@ -1,0 +1,54 @@
+@import '../styles';
+
+:host {
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+  font-size: 1rem;
+  font-family: $type-1;
+}
+// ===================================
+.d-flow-root {
+  display: flow-root;
+}
+.pagelink a, .btn {
+  cursor: pointer;
+}
+.butonsDiv {
+  a {
+    font-size: 13px;
+  }
+}
+.listview {
+  .innerlists {
+    border-bottom: 1px solid #b3bac2;
+    padding-bottom: 6px;
+    margin-bottom: 6px;
+    p {
+      // padding: 0.45rem 1px;
+      label {
+        font-weight: 500;
+        width: 40%;
+        span {
+          font-size: 12px;
+          font-weight: 300;
+        }
+      }
+    }
+  }
+}
+
+.nameList {
+  span {
+      font-size: 14px;
+  }
+}
+// ===================================
+
+@media screen and (max-width: 768px) {
+  .nameList {
+    li {
+        display: block !important;
+    }
+  }
+}

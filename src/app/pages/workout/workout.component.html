@@ -1,0 +1,152 @@
+<!-- <div class="row justify-content-between align-items-center pl-4 pr-4 pb-3">
+  <h2 class="h4 mb-0">Workout List :</h2>
+  <div class="exportExcel">
+    <button class="btn btn-outline-success" (click)="exportExcel()">Export To Excel</button>
+  </div>
+</div> -->
+<div class="d-flow-root text-md-center pl-3 pr-3 pb-3">
+  <span class="d-inline text-right d-md-none" (click)="dash.backtoPage()"><i class="fa fa-arrow-left pr-2"></i></span>
+  <span class="h4 mb-0 pl-md-5 ml-md-5">Workouts</span>
+  <div class="exportExcel float-right">
+    <button class="btn btn-outline-dark mr-md-2" (click)="exportExcel()"><i class="fa fa-file-excel-o mr-0" aria-hidden="true"></i>
+    </button>
+    <button class="btn btn-outline-dark d-none d-md-inline" (click)="dash.backtoPage()">Back</button>
+  </div>
+</div>
+  
+<div class="col-lg-12 grid-margin stretch-card">
+  <div class="card">
+    <div class="card-body">
+      <!-- <div class="back d-flex justify-content-between">
+        <h4 class="d-inline">Test List :</h4>
+        <p class="d-inline text-right" (click)="dash.backtoPage()"><i class="fa fa-angle-double-left pr-2"></i>Back To User List</p>
+      </div> -->
+      <div class="d-sm-flex justify-content-between">
+        <div class="from-group">
+          <ul class="list-inline m-0 nameList">
+            <li class="list-inline-item pr-4">
+              <span class="font-weight-bold"><i class="fa fa-id-badge pr-2"></i>ID: </span>
+              <span class="pl-2">1</span> 
+            </li>
+            <li class="list-inline-item pr-4">
+              <span class="font-weight-bold"><i class="fa fa-user-circle pr-2"></i>Name : </span>
+              <span class="pl-2">User Name</span>
+            </li>
+            <li class="list-inline-item pr-4">
+              <span class="font-weight-bold"><i class="fa fa-transgender pr-2"></i>Gender : </span>
+              <span class="pl-2">Male</span>
+            </li>
+            <li class="list-inline-item pr-4">
+              <span class="font-weight-bold"><i class="fa fa-male pr-2"></i>Age : </span>
+              <span class="pl-2">21</span>
+            </li>
+            <li class="list-inline-item pr-4">
+              <span class="font-weight-bold"><i class="fa fa-superpowers pr-2"></i>Weight : </span>
+              <span class="pl-2">50</span>
+            </li>
+          </ul>
+        </div>
+        <div class="dropdown mt-2 mt-md-0">
+          <a class="btn btn-secondary dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{dropdownName}}
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" [(ngModel)]="dropdownName" ngDefaultControl>All</a>
+            <a class="dropdown-item" value="prone" (click)="filter('Prone')">Prone</a>
+            <a class="dropdown-item" value="supine" (click)="filter('Supine')">Supine</a>
+            <a class="dropdown-item" value="lateral" (click)="filter('Lateral')">Lateral</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-lg-12 grid-margin stretch-card d-none d-md-block">
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr class="text-center">
+              <!-- <th (click)="sort('id')">No.
+                <i class="fa"
+                  [ngClass]="{'fa-sort-asc': (column == 'id' && !isDesc) ,'fa-sort-desc': (column == 'id' && isDesc) }"
+                  aria-hidden="true"></i>
+              </th> -->
+              <th (click)="sort('date')">Date
+                <i class="fa"
+                  [ngClass]="{'fa-sort-asc': (column == 'date' && !isDesc) ,'fa-sort-desc': (column == 'date' && isDesc) }"
+                  aria-hidden="true"></i>
+              </th>
+              <th (click)="sort('position')">Position
+                <i class="fa"
+                  [ngClass]="{'fa-sort-asc': (column == 'position' && !isDesc) ,'fa-sort-desc': (column == 'position' && isDesc) }"
+                  aria-hidden="true"></i>
+              </th>
+              <th (click)="sort('angle')">Angle
+                <i class="fa"
+                  [ngClass]="{'fa-sort-asc': (column == 'angle' && !isDesc) ,'fa-sort-desc': (column == 'angle' && isDesc) }"
+                  aria-hidden="true"></i>
+              </th>
+              <th (click)="sort('time')">Time
+                <i class="fa"
+                  [ngClass]="{'fa-sort-asc': (column == 'time' && !isDesc) ,'fa-sort-desc': (column == 'time' && isDesc) }"
+                  aria-hidden="true"></i>
+              </th>
+              <th></th>
+            </tr>
+            <!-- <tr class="searchInput">
+              <td>
+                <input type="text" class="form-control" placeholder="Id" [(ngModel)]="search.id">
+              </td>
+              <td>
+                <input type="text" class="form-control" placeholder="Date" [(ngModel)]="search.date">
+              </td>
+              <td>
+                <input type="text" class="form-control" placeholder="Position" [(ngModel)]="search.position">
+              </td>   
+              <td>
+                <input type="text" class="form-control" placeholder="Angle" [(ngModel)]="search.angle">
+              </td>   
+              <td>
+                <input type="text" class="form-control" placeholder="Time" [(ngModel)]="search.time">
+              </td>   
+              <td>
+                <button type="button" class="btn btn-outline-primary btn-sm" (click)="clearBtn()">Clear</button>
+              </td>
+            </tr> -->
+          </thead>
+          <tbody>
+            <tr class="text-center" *ngFor="let item of workList | filterBy: search | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+              <!-- <td>{{ item.id }}</td> -->
+              <td>{{ item.date }}</td>
+              <td>{{ item.position }}</td>
+              <td class="text-right">{{ item.angle }}</td>
+              <td class="text-right">{{ item.time }}</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- <pagination-controls (pageChange)="p = $event" maxSize="5" directionLinks="true" autoHide="true"></pagination-controls> -->
+    <pagination-controls class="text-center" (pageChange)="p = $event"></pagination-controls>
+  </div>
+</div>
+
+
+<div class="col-lg-12 grid-margin stretch-card d-md-none">
+  <div class="card">
+    <div class="card-body">
+      <div class="listview">
+        <div class="innerlists" *ngFor="let item of workList">
+          <p class="m-0"><label class="m-0" for="">Date </label><span>:&nbsp;&nbsp;{{item.date}}</span></p>
+          <p class="m-0"><label class="m-0" for="">Position </label><span>:&nbsp;&nbsp;{{item.position}}</span></p>
+          <p class="m-0"><label class="m-0" for="">Angle </label><span>:&nbsp;&nbsp;{{item.angle}}</span></p>
+          <p class="m-0"><label class="m-0" for="">Time </label><span>:&nbsp;&nbsp;{{item.time}}</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
