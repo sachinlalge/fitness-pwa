@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GoToDashboardService } from '../../service/go-to-dashboard.service';
 import { ExcelService } from 'src/app/service/excel-service/excel.service';
+import { PassServiceService } from 'src/app/service/pass-service/pass-service.service';
+import { GetUserWorkService } from 'src/app/service/get-user-work-service/get-user-work.service';
+import { NgxSpinnerService } from "ngx-spinner";
+import { ToastrService } from 'ngx-toastr';
+import { msg } from '../../../messages';
 
 @Component({
   selector: 'app-workout',
@@ -10,21 +15,22 @@ import { ExcelService } from 'src/app/service/excel-service/excel.service';
   providers: [ExcelService]
 })
 export class WorkoutComponent implements OnInit {
+  userData: any = [];
   workList: any = [
-    { id: 1, date: 'Nov 23, 2019', position: 'Prone', angle: '20', time: '02:00'},
-    { id: 2, date: 'Dec 29, 2019', position: 'Supine', angle: '45', time: '01:10'},
-    { id: 3, date: 'Jan 30, 2019', position: 'Lateral', angle: '65', time: '04:00'},
-    { id: 4, date: 'Feb 5, 2019', position: 'Lateral', angle: '85', time: '07:45'},
-    { id: 5, date: 'Mar 21, 2019', position: 'Supine', angle: '45', time: '12:00'},
-    { id: 6, date: 'Apri 11, 2019', position: 'Lateral', angle: '67', time: '01:00'},
-    { id: 7, date: 'Jun 27, 2019', position: 'Supine', angle: '45', time: '05:00'},
-    { id: 8, date: 'Nov 23, 2019', position: 'Prone', angle: '64', time: '03:00'},
-    { id: 9, date: 'Dec 29, 2019', position: 'Lateral', angle: '87', time: '03:21'},
-    { id: 10, date: 'Jan 30, 2019', position: 'Supine', angle: '12', time: '12:00'},
-    { id: 11, date: 'Feb 5, 2019', position: 'Prone', angle: '34', time: '02:00'},
-    { id: 12, date: 'Mar 21, 2019', position: 'Lateral', angle: '56', time: '04:44'},
-    { id: 13, date: 'Apri 11, 2019', position: 'Supine', angle: '10', time: '06:56'},
-    { id: 14, date: 'Jun 27, 2019', position: 'Prone', angle: '50', time: '09:00'},
+    // { id: 1, date: 'Nov 23, 2019', position: 'Prone', angle: '20', time: '02:00'},
+    // { id: 2, date: 'Dec 29, 2019', position: 'Supine', angle: '45', time: '01:10'},
+    // { id: 3, date: 'Jan 30, 2019', position: 'Lateral', angle: '65', time: '04:00'},
+    // { id: 4, date: 'Feb 5, 2019', position: 'Lateral', angle: '85', time: '07:45'},
+    // { id: 5, date: 'Mar 21, 2019', position: 'Supine', angle: '45', time: '12:00'},
+    // { id: 6, date: 'Apri 11, 2019', position: 'Lateral', angle: '67', time: '01:00'},
+    // { id: 7, date: 'Jun 27, 2019', position: 'Supine', angle: '45', time: '05:00'},
+    // { id: 8, date: 'Nov 23, 2019', position: 'Prone', angle: '64', time: '03:00'},
+    // { id: 9, date: 'Dec 29, 2019', position: 'Lateral', angle: '87', time: '03:21'},
+    // { id: 10, date: 'Jan 30, 2019', position: 'Supine', angle: '12', time: '12:00'},
+    // { id: 11, date: 'Feb 5, 2019', position: 'Prone', angle: '34', time: '02:00'},
+    // { id: 12, date: 'Mar 21, 2019', position: 'Lateral', angle: '56', time: '04:44'},
+    // { id: 13, date: 'Apri 11, 2019', position: 'Supine', angle: '10', time: '06:56'},
+    // { id: 14, date: 'Jun 27, 2019', position: 'Prone', angle: '50', time: '09:00'},
   ];
   p: number = 1;
   arrow = false;
@@ -34,36 +40,41 @@ export class WorkoutComponent implements OnInit {
   dataObjforExcel: any = [];
   dataArrayforExcel: any = [];
   dropdownName: any;
-  
+  typeList: any = [
+    {name: 'All', value: ''},
+    {name: 'Prone', value: 'p'},
+    {name: 'Supine', value: 's'},
+    {name: 'Right Lateral', value: 'r'}, 
+    {name: 'Left Lateral', value: 'l'},
+  ];
+
   constructor(private router: Router,
     public dash: GoToDashboardService,
-    private excelService: ExcelService) { 
+    private excelService: ExcelService,
+    private passServ: PassServiceService,
+    private workSer: GetUserWorkService,
+    private spinner: NgxSpinnerService,
+    private toastr: ToastrService    
+  ) { 
       this.search = {
-        id: '',
-        date: '',
-        position: '',  
-        angle: '',  
-        time: '',  
+        position: '',
       };
+      this.userData = this.passServ.workoutUser;
+      console.log('WorkuserData', this.userData);
     }
 
     ngOnInit() {
-      this.dropdownName = 'All';
+      this.spinner.show();
+      this.getWorkoutUsers();
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 1000);
     }
-  
-    filter(val) {
-      this.dropdownName = val;
-    }
+    
+    // filter(val) {
+    //   this.dropdownName = val;
+    // }
 
-  // clear button
-  // clearBtn() {
-  //   this.search.id = '';
-  //   this.search.date = '';
-  //   this.search.position = '';
-  //   this.search.angle = '';
-  //   this.search.time = '';
-  // }
- 
   // sort 
   sort(property) {
     this.isDesc = !this.isDesc; // change the direction
@@ -99,5 +110,45 @@ export class WorkoutComponent implements OnInit {
 
   exportAsXLSX(): void {
     this.excelService.exportAsExcelFile(this.dataArrayforExcel, 'Details');
+  }
+
+  getWorkoutUsers() {
+    const data = {
+      ucode: this.userData.uname,
+    }
+    this.workSer.getWorkUsers(data).then(res => {
+      console.log('test res', res);
+    //   this.spinner.hide();
+      try {
+        if (res.type === true) {
+          console.log('res', res);
+          try {
+          this.workList = res.data;
+          console.log('this.workList',this.workList);
+          // this.setveractive = false;
+          } catch (e) {
+            console.log(e);
+          }
+        }
+        if (res.type === false) {
+          // this.spinner.hide();
+          console.log('res', res);
+          // if(this.featureList.length === 0){
+          //   this.featureLength = false;
+          // } else if(this.featureList.length > 0){
+          //   this.featureLength = true;
+          // }
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    err => {
+      console.log(err);
+      // this.spinner.hide();
+      // this.setveractive = true;
+      // this.featureList = [];
+      this.toastr.error(msg.severerror);
+    });
   }
 }

@@ -9,5 +9,12 @@
     </div>
   </div>
 </div> -->
-<router-outlet></router-outlet>
+
+<router-outlet>
+  <!-- <ng4-loading-spinner [threshold]="2000" [timeout]="4000"  [zIndex]="9999"></ng4-loading-spinner> -->
+  <ngx-spinner></ngx-spinner>
+
+</router-outlet>
+
+<!-- [template]="template" [loadingText]="'Please wait...'" -->
 <!-- <app-login *ngIf="dashboard" (pageChanged)="redirectToDash($event)"></app-login> -->

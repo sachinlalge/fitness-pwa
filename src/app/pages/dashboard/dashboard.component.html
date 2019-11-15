@@ -224,7 +224,7 @@
 <div class="d-flow-root text-md-center pl-3 pr-3 pb-3">
   <span class="h4 mb-0 pl-md-5">Users</span>
   <div class="exportExcel float-right">
-    <button class="btn btn-outline-dark mr-2" (click)="exportExcel()"><i class="fa fa-file-excel-o mr-0" aria-hidden="true"></i>
+    <button class="btn btn-outline-dark" (click)="exportExcel()"><i class="fa fa-file-excel-o mr-0" aria-hidden="true"></i>
     </button>
   </div>
 </div>
@@ -286,8 +286,8 @@
               <td data-th="age" class="text-right">{{item.age}}</td>
               <td data-th="weight" class="text-right">{{item.weight}}</td>
               <td class="pagelink">
-                <a class="text-decoration-line mr-4" (click)="gotoPage(['pages/test'])"><u>Test</u></a>
-                <a class="text-decoration-line" (click)="gotoPage(['pages/workout'])"><u>Workout</u></a>
+                <a class="text-decoration-line mr-4" (click)="gotestPage(item)"><u>Test</u></a>
+                <a class="text-decoration-line" (click)="goworkPage(item)"><u>Workout</u></a>
                 <!-- <button type="button" class="btn btn-outline-success btn-sm mr-4 testBtn" (click)="gotoPage(['pages/test'])">Test</button> -->
                 <!-- <button type="button" class="btn btn-outline-danger btn-sm" (click)="gotoPage(['pages/workout'])">Workout</button> -->
               </td>
@@ -310,8 +310,8 @@
           <p class="m-0"><label class="m-0" for="">Age </label><span>:&nbsp;&nbsp;{{item.age}}</span></p>
           <p class="m-0"><label class="m-0" for="">Weight </label><span>:&nbsp;&nbsp;{{item.weight}}</span></p>
           <div class="butonsDiv d-flex justify-content-between pt-1 pb-1">
-            <a (click)="gotoPage(['pages/test'])"><u>Test</u></a>
-            <a (click)="gotoPage(['pages/workout'])"><u>Workout</u></a>
+            <a (click)="gotestPage(item)"><u>Test</u></a>
+            <a (click)="goworkPage(item)"><u>Workout</u></a>
           </div>
         </div>
       </div>
