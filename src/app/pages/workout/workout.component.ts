@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { GoToDashboardService } from '../../service/go-to-dashboard.service';
 import { ExcelService } from 'src/app/service/excel-service/excel.service';
@@ -8,6 +8,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from 'ngx-toastr';
 import { msg } from '../../../messages';
 
+
 @Component({
   selector: 'app-workout',
   templateUrl: './workout.component.html',
@@ -15,6 +16,8 @@ import { msg } from '../../../messages';
   providers: [ExcelService]
 })
 export class WorkoutComponent implements OnInit {
+  // @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+
   userData: any = [];
   workList: any = [
     // { id: 1, date: 'Nov 23, 2019', position: 'Prone', angle: '20', time: '02:00'},
@@ -47,6 +50,8 @@ export class WorkoutComponent implements OnInit {
     {name: 'Right Lateral', value: 'r'}, 
     {name: 'Left Lateral', value: 'l'},
   ];
+  conentHeight: string;
+  offset: number = 0;
 
   constructor(private router: Router,
     public dash: GoToDashboardService,
@@ -59,10 +64,18 @@ export class WorkoutComponent implements OnInit {
       this.search = {
         position: '',
       };
+      this.conentHeight = '0px';
       this.userData = this.passServ.workoutUser;
       console.log('WorkuserData', this.userData);
     }
 
+    ngAfterViewInit() {
+      const e = document.getElementsByClassName('infinite');
+      console.log(e[0].clientHeight);
+      this.conentHeight = String(e[0].clientHeight - this.offset) + 'px';
+      console.log('scroll infinte',e);
+    }
+   
     ngOnInit() {
       this.spinner.show();
       this.getWorkoutUsers();
@@ -137,7 +150,7 @@ export class WorkoutComponent implements OnInit {
           //   this.featureLength = false;
           // } else if(this.featureList.length > 0){
           //   this.featureLength = true;
-          // }
+          // }/
         }
       } catch (e) {
         console.log(e);
@@ -151,4 +164,22 @@ export class WorkoutComponent implements OnInit {
       this.toastr.error(msg.severerror);
     });
   }
+
+  // infinte scroll
+  // onScroll(event) {
+  //   let element = this.myScrollContainer.nativeElement;
+  //   // element.style.height = '500px';
+  //   // element.style.height = '500px';
+  //   // Math.ceil(element.scrollHeight - element.scrollTop) === element.clientHeight
+  //   if (element.scrollHeight - element.scrollTop - element.clientHeight < 20) {
+  //       console.log(element);
+  //     // if (!this.isworking) {
+  //       // this.currentPage++;
+  //       // if (this.currentPage <= this.totalPages) {
+  //       //   this.isworking = true;
+  //       //   this.getCategories(this.str, this.currentPage);
+  //       // }
+  //     // }
+  //   }
+  // }
 }

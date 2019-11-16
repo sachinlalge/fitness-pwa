@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation,  ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ExcelService } from 'src/app/service/excel-service/excel.service';
 import { GetAllUsersService } from '../../service/get-all-users/get-all-users.service';
@@ -16,20 +15,23 @@ import { msg } from '../../../messages';
   encapsulation: ViewEncapsulation.None
 })
 export class DashboardComponent implements OnInit {
-  userlist: any = [
-    // { id: 1, name: 'Scarlett Johansson', gender: 'Female', age: '2019', weight: '67' },
-    // { id: 3, name: 'Morena Baccarin ', gender: 'Female', age: '2018', weight: '98' },
-    // { id: 9, name: 'Chris Hemsworth ', gender: 'Male', age: '2018', weight: '59' },
-    // { id: 5, name: 'Sophie Turner', gender: 'Female', age: '2019', weight: '20' },
-    // { id: 9, name: 'Don Cheadle ', gender: 'Male', age: '2018', weight: '59' },
-    // { id: 6, name: 'Simone Missick ', gender: 'Female', age: '2018', weight: '45' },
-    // { id: 7, name: ' Samuel L. Jackson ', gender: 'Male', age: '2019', weight: '73' },
-    // { id: 8, name: 'Robert Downey Jr. ', gender: 'Male', age: '2019', weight: '82' },
-    // { id: 9, name: 'Paul Bettany ', gender: 'Male', age: '2018', weight: '59' },
-    // { id: 4, name: 'Emma Stone ', gender: 'Female', age: '2019', weight: '90' },
-    // { id: 9, name: 'Chris Evans ', gender: 'Male', age: '2018', weight: '59' },
-    // { id: 2, name: 'Elizabeth Olsen ', gender: 'Female', age: '2018', weight: '43' },
-    // { id: 9, name: 'Jon Favreau ', gender: 'Male', age: '2018', weight: '59' },
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+
+  userlist: any = [];
+  userlist1: any = [
+    { id: 1, name: 'Scarlett Johansson', gender: 'Female', age: '2019', weight: '67' },
+    { id: 3, name: 'Morena Baccarin ', gender: 'Female', age: '2018', weight: '98' },
+    { id: 9, name: 'Chris Hemsworth ', gender: 'Male', age: '2018', weight: '59' },
+    { id: 5, name: 'Sophie Turner', gender: 'Female', age: '2019', weight: '20' },
+    { id: 9, name: 'Don Cheadle ', gender: 'Male', age: '2018', weight: '59' },
+    { id: 6, name: 'Simone Missick ', gender: 'Female', age: '2018', weight: '45' },
+    { id: 7, name: ' Samuel L. Jackson ', gender: 'Male', age: '2019', weight: '73' },
+    { id: 8, name: 'Robert Downey Jr. ', gender: 'Male', age: '2019', weight: '82' },
+    { id: 9, name: 'Paul Bettany ', gender: 'Male', age: '2018', weight: '59' },
+    { id: 4, name: 'Emma Stone ', gender: 'Female', age: '2019', weight: '90' },
+    { id: 9, name: 'Chris Evans ', gender: 'Male', age: '2018', weight: '59' },
+    { id: 2, name: 'Elizabeth Olsen ', gender: 'Female', age: '2018', weight: '43' },
+    { id: 9, name: 'Jon Favreau ', gender: 'Male', age: '2018', weight: '59' },
   ];
   p: number = 1;
   arrow = false;
@@ -45,15 +47,10 @@ export class DashboardComponent implements OnInit {
     private getUsersServ: GetAllUsersService,
     private passServ: PassServiceService,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdf: ChangeDetectorRef
   ) {
-    // this.search = {
-    //   id: '',
-    //   name: '',
-    //   gender: '',
-    //   age: '', 
-    //   weight: '',  
-    // };
+    
   }
 
   ngOnInit() {
@@ -156,5 +153,8 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  onScrollUp() {
+    this.userlist = this.userlist.concat(this. getUsers());
+  }
 
 }

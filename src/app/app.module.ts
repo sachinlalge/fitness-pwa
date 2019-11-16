@@ -15,7 +15,7 @@ import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { ToastrModule } from 'ngx-toastr';
-
+import { NgxInfiniteScrollerModule } from 'ngx-infinite-scroller';
 
 @NgModule({
   declarations: [
@@ -30,8 +30,9 @@ import { ToastrModule } from 'ngx-toastr';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ToastrModule.forRoot(),
     NgxSpinnerModule,
+    NgxInfiniteScrollerModule,
+    ToastrModule.forRoot(),
     NgbModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],

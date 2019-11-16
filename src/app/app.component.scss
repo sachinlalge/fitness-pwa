@@ -20,6 +20,8 @@
   }
 }
 .listview {
+    overflow: scroll;
+    height: 75vh;
   .innerlists {
     border-bottom: 1px solid #b3bac2;
     padding-bottom: 6px;

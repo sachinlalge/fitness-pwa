@@ -303,15 +303,18 @@
 <div class="col-lg-12 grid-margin stretch-card d-md-none">
   <div class="card">
     <div class="card-body">
-      <div class="listview">
-        <div class="innerlists" *ngFor="let item of userlist">
-          <p class="m-0"><label class="m-0" for="" >Name </label><span>:&nbsp;&nbsp;{{item.name}}</span></p>
-          <p class="m-0"><label class="m-0" for="">Gender </label><span>:&nbsp;&nbsp;{{item.gender}}</span></p>
-          <p class="m-0"><label class="m-0" for="">Age </label><span>:&nbsp;&nbsp;{{item.age}}</span></p>
-          <p class="m-0"><label class="m-0" for="">Weight </label><span>:&nbsp;&nbsp;{{item.weight}}</span></p>
-          <div class="butonsDiv d-flex justify-content-between pt-1 pb-1">
-            <a (click)="gotestPage(item)"><u>Test</u></a>
-            <a (click)="goworkPage(item)"><u>Workout</u></a>
+      <div class="listview" ngxInfiniteScroller strategy="scrollingToBoth" 
+            (onScrollDown)="onScrollUp()">
+        <div #scrollMe >
+          <div class="innerlists" *ngFor="let item of userlist">
+            <p class="m-0"><label class="m-0" for="" >Name </label><span>:&nbsp;&nbsp;{{item.name}}</span></p>
+            <p class="m-0"><label class="m-0" for="">Gender </label><span>:&nbsp;&nbsp;{{item.gender}}</span></p>
+            <p class="m-0"><label class="m-0" for="">Age </label><span>:&nbsp;&nbsp;{{item.age}}</span></p>
+            <p class="m-0"><label class="m-0" for="">Weight </label><span>:&nbsp;&nbsp;{{item.weight}}</span></p>
+            <div class="butonsDiv d-flex justify-content-between pt-1 pb-1">
+              <a (click)="gotestPage(item)"><u>Test</u></a>
+              <a (click)="goworkPage(item)"><u>Workout</u></a>
+            </div>
           </div>
         </div>
       </div>
