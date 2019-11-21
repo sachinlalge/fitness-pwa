@@ -1,10 +1,9 @@
-# StarAdminAngular
+#Fitness Report
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.1.
 
 <h1>Demo</h1>
 
-[![N|Solid](preview.jpg)](https://www.bootstrapdash.com/demo/star-admin-angular/dashboard)
 
 ## Development server
 
