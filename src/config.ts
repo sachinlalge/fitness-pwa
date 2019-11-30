@@ -5,7 +5,8 @@ export class Config {
 }
 
 export const webApi = {
-    baseUrl: 'http://13.232.192.230:9845/',
+    baseUrl: 'http://13.232.192.230:9847/', // test
+    // baseUrl: 'http://13.232.192.230:9845/', // devdas   
     apiUrl: {
         /********************* Auth ********************/
         loginAdmin: 'api/reports/adminWeb/admin_user_login',

@@ -45,44 +45,55 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    this.spinner.show();
-    const params = {
-      usn : this.registerForm.value.username,
-      pass : this.registerForm.value.password,
-    }
-    this.loginSer.loginUser(params).then(res => {
-      try {
-        if (res.type === true) {
-          
-          console.log('res', res);
-          try {
-          this.userD = res.data[0];
-          localStorage.setItem('UserName', JSON.stringify(this.userD.username));
-          localStorage.setItem('UserData', JSON.stringify(this.userD));
-          this.router.navigate(['/pages']);
-          setTimeout(() => {
-            this.spinner.hide();
-            this.toastr.success(msg.loginsuc);
-          }, 1000);
-          } catch (e) {
-            console.log(e);
-          }
-        }
-        if (res.type === false) {
-          this.spinner.hide();
-          console.log('res', res);
-          this.toastr.error(msg.loginerror);
-        }
-      } catch (e) {
-        console.log(e);
+    if (this.registerForm.invalid) {
+      // if (!this.registerForm.value.username || !this.registerForm.value.password) {
+      //   this.toastr.error(msg.requiredUP);
+      // }
+      return;
+    } else {      
+      this.spinner.show();
+      const params = {
+        usn : this.registerForm.value.username,
+        pass : this.registerForm.value.password,
       }
-    },
-    err => {
-      console.log(err);
-      this.spinner.hide();
-      this.toastr.error(msg.severerror);
-    });
-
+      this.loginSer.loginUser(params).then(res => {
+        try {
+          if (res.type === true) {
+            if (res.data.length  === 0) {
+              this.toastr.error(msg.invalidUP);
+              this.spinner.hide();
+            } else {
+                console.log('res', res);
+                try {
+                this.userD = res.data[0];
+                localStorage.setItem('UserName', JSON.stringify(this.userD.username));
+                localStorage.setItem('UserData', JSON.stringify(this.userD));
+                this.router.navigate(['/pages']);
+                setTimeout(() => {
+                  this.spinner.hide();
+                  this.toastr.success(msg.loginsuc);
+                }, 1000);
+              } 
+              catch (e) {
+                console.log(e);
+              }
+            }
+          }
+          if (res.type === false) {
+            this.spinner.hide();
+            console.log('res', res);
+            this.toastr.error(msg.loginerror);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      },
+      err => {
+        console.log(err);
+        this.spinner.hide();
+        this.toastr.error(msg.severerror);
+      });
+    }
   }
 
 }

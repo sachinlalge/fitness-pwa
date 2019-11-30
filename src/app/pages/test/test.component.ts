@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import 'rxjs/add/operator/filter';
 import { GoToDashboardService } from 'src/app/service/go-to-dashboard.service';
 import { ExcelService } from 'src/app/service/excel-service/excel.service';
 import { PassServiceService } from 'src/app/service/pass-service/pass-service.service';
@@ -46,8 +48,12 @@ export class TestComponent implements OnInit {
     {name: 'Right Lateral', value: 'r'}, 
     {name: 'Left Lateral', value: 'l'},
   ];
+  // getPara: any;
+  tenRecords: any = [];
+  infinitespinner: boolean = false;
 
   constructor(private router: Router,
+    private route: ActivatedRoute,
     public dash: GoToDashboardService,
     private excelService: ExcelService,
     private passServ: PassServiceService,  
@@ -63,22 +69,30 @@ export class TestComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.getTestuser();
-    // setTimeout(() => {
-    //   this.spinner.hide();
-    // }, 1000);
+    if (!this.userData) {
+      this.router.navigate(['pages/dashboard']);
+    } else if (this.userData) {
+      this.spinner.show();
+      this.getTestuser();
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 1000);
+    }
+
+    // this.route.queryParams
+    //   .filter(params => params.order)
+    //   .subscribe(params => {
+    //     console.log(params); 
+
+    //     this.getPara = params.order;
+    //     console.log(this.getPara); 
+    //   });
   }
 
   filter(val) {
     this.dropdownName = val;
   }
   
-  // clear button
-  // clearBtn() {
-  //   this.search.id = '';
-  //   this.search.date = '';
-  //   this.search.score = '';
-  // }
 
   // sort 
   sort(property) {
@@ -108,8 +122,8 @@ export class TestComponent implements OnInit {
     //   }
       this.dataObjforExcel = {
         // 'ID': this.testList[i].id,
-        'DATE': this.testList[i].date,
-        'SCORE': this.testList[i].score
+        'DATE': this.testList[i].actDate,
+        'SCORE': this.testList[i].CS
       }
       console.log('this.dataArray',this.dataObjforExcel)
       this.dataArrayforExcel.push(this.dataObjforExcel);
@@ -128,27 +142,24 @@ export class TestComponent implements OnInit {
     }
     this.spinner.show();
     this.testServ.getTestUsers(data).then(res => {
-      console.log('test res', res);
+      // console.log('test res', res);
       this.spinner.hide();
       try {
         if (res.type === true) {
-          console.log('res', res);
+          // console.log('res', res);
           try {
-          this.testList = res.data;
-          console.log('this.testList',this.testList);
-          // this.setveractive = false;
+            this.testList = res.data;
+            for(let i = 0; i < this.testList.length; i++) {
+              if(i < 10) {
+                this.tenRecords.push(this.testList[i]);
+              }
+            }
           } catch (e) {
             console.log(e);
           }
         }
         if (res.type === false) {
           this.spinner.hide();
-          console.log('res', res);
-          // if(this.featureList.length === 0){
-          //   this.featureLength = false;
-          // } else if(this.featureList.length > 0){
-          //   this.featureLength = true;
-          // }
         }
       } catch (e) {
         console.log(e);
@@ -157,10 +168,29 @@ export class TestComponent implements OnInit {
     err => {
       console.log(err);
       this.spinner.hide();
-      // this.setveractive = true;
-      // this.featureList = [];
       this.toastr.error(msg.severerror);
     });
   }
 
+  onScrollDown() {
+    console.log();
+    var startint = this.tenRecords.length;
+    var endint = this.tenRecords.length +  10;
+    if(this.testList.length >= startint && !this.infinitespinner){
+      this.infinitespinner = true;
+      var newarray = [];
+      if(this.testList.length <= endint){
+        endint = this.testList.length;
+      }
+      for(let i = startint; i < endint; i++) {
+        newarray.push(this.testList[i]);
+      }
+      
+      setTimeout(() => {
+        this.tenRecords = this.tenRecords.concat(newarray);
+        // console.log("10 records length", this.tenRecords);
+        this.infinitespinner = false;
+      }, 1000);
+    }
+  }
 }

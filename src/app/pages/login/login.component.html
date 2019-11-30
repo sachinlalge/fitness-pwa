@@ -4,10 +4,11 @@
       <div class="d-flex justify-content-center">
         <div class="brand_logo_container">
           <img src="assets/images/userlogin.png" class="brand_logo" alt="Logo">
-				</div>
+        </div>
 			</div>
 			<div class="d-flex justify-content-center form_container">
-        <form [formGroup]="registerForm" >
+        <form [formGroup]="registerForm" (click)="onSubmit()">
+          <h2 class="appname text-center">SMARTcore</h2>
 					<div class="input-group mb-3">
 						<div class="input-group-append">
 							<span class="input-group-text"><i class="fa fa-user"></i></span>
@@ -15,9 +16,9 @@
             <input type="text" name="" class="form-control input_user" value="" placeholder="username" required
             formControlName="username" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" maxlength="50">
           </div>
-          <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+          <!-- <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
             <div *ngIf="f.username.errors.required">Username is required</div>
-          </div>
+          </div> -->
 
 					<div class="input-group mb-2">
 						<div class="input-group-append">
@@ -26,15 +27,15 @@
             <input type="password" name="" class="form-control input_pass" value="" placeholder="password" required
             formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" maxlength="50">
           </div>
-          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+          <!-- <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
             <div *ngIf="f.password.errors.required">Password is required</div>
+          </div> -->
+          <div class="d-flex justify-content-center mt-3 login_container p-0">
+            <button type="submit" name="button" class="btn login_btn">Login</button>
           </div>
-
 				</form>
 			</div>
-			<div class="d-flex justify-content-center mt-3 login_container">
-				<button type="submit" name="button" class="btn login_btn" (click)="onSubmit()">Login</button>
-			</div>
+			
 		</div>
 	</div>
 </div>

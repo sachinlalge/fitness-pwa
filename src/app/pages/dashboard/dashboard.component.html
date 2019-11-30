@@ -221,37 +221,44 @@
   </div> -->
 </div>
 
-<div class="d-flow-root text-md-center pl-3 pr-3 pb-3">
+<div class="d-flow-root text-md-center pl-3 pr-3 pb-md-3 pb-2">
   <span class="h4 mb-0 pl-md-5">Users</span>
-  <div class="exportExcel float-right">
-    <button class="btn btn-outline-dark" (click)="exportExcel()"><i class="fa fa-file-excel-o mr-0" aria-hidden="true"></i>
-    </button>
+  <div class="d-flex float-right">
+    <div class="excelicon mr-md-2" (click)="exportExcel()">
+      <img src="../../../assets/images/excel-icon.png">
+    </div>
+    <button class="btn btn-outline-dark d-none d-md-inline" data-toggle="modal" data-target="#exampleModalCenter">Upload</button>
   </div>
 </div>
 
-<div class="col-lg-12 grid-margin stretch-card d-none d-md-block">
+<div class="col-lg-12 stretch-card d-none d-md-block">
   <div class="card">
     <div class="card-body">
       <div class="table-responsive">
         <table class="table table-hover">
           <thead>
-            <tr class="text-center">
+            <tr>
+              <th (click)="sort('userid')">ID
+                <i class="fa"
+                  [ngClass]="{'fa-sort-asc': (column == 'userid' && !isDesc) ,'fa-sort-desc': (column == 'userid' && isDesc) }"
+                  aria-hidden="true"></i>
+              </th>
               <th (click)="sort('name')">Name
                 <i class="fa"
                   [ngClass]="{'fa-sort-asc': (column == 'name' && !isDesc) ,'fa-sort-desc': (column == 'name' && isDesc) }"
                   aria-hidden="true"></i>
               </th>
-              <th (click)="sort('gender')">Gender
+              <th class="text-center" (click)="sort('gender')">Gender
                 <i class="fa"
                 [ngClass]="{'fa-sort-asc': (column == 'gender' && !isDesc) ,'fa-sort-desc': (column == 'gender' && isDesc) }"
                 aria-hidden="true"></i>
               </th>
-              <th (click)="sort('age')">Age (Years)
+              <th class="text-center" (click)="sort('age')">Age (Years)
                 <i class="fa"
                 [ngClass]="{'fa-sort-asc': (column == 'age' && !isDesc) ,'fa-sort-desc': (column == 'age' && isDesc) }"
                 aria-hidden="true"></i>
               </th>
-              <th (click)="sort('weight')">Latest Weight
+              <th class="text-center" (click)="sort('weight')">Current Weight
                 <i class="fa"
                 [ngClass]="{'fa-sort-asc': (column == 'weight' && !isDesc) ,'fa-sort-desc': (column == 'weight' && isDesc) }"
                 aria-hidden="true"></i>
@@ -281,10 +288,11 @@
           </thead>
           <tbody>
             <tr class="" *ngFor="let item of userlist | filterBy: search | paginate: { itemsPerPage: 10, currentPage: p }; let i = index;">
+              <td data-th="id">{{item.userid}}</td>
               <td data-th="Name">{{item.name}}</td>
-              <td data-th="gender">{{item.gender}}</td>
-              <td data-th="age" class="text-right">{{item.age}}</td>
-              <td data-th="weight" class="text-right">{{item.weight}}</td>
+              <td data-th="gender" class="text-center">{{item.gender}}</td>
+              <td data-th="age" class="text-center">{{item.age}}</td>
+              <td data-th="weight" class="text-center">{{item.weight}}</td>
               <td class="pagelink">
                 <a class="text-decoration-line mr-4" (click)="gotestPage(item)"><u>Test</u></a>
                 <a class="text-decoration-line" (click)="goworkPage(item)"><u>Workout</u></a>
@@ -304,20 +312,121 @@
   <div class="card">
     <div class="card-body">
       <div class="listview" ngxInfiniteScroller strategy="scrollingToBoth" 
-            (onScrollDown)="onScrollUp()">
-        <div #scrollMe >
-          <div class="innerlists" *ngFor="let item of userlist">
-            <p class="m-0"><label class="m-0" for="" >Name </label><span>:&nbsp;&nbsp;{{item.name}}</span></p>
-            <p class="m-0"><label class="m-0" for="">Gender </label><span>:&nbsp;&nbsp;{{item.gender}}</span></p>
-            <p class="m-0"><label class="m-0" for="">Age </label><span>:&nbsp;&nbsp;{{item.age}}</span></p>
-            <p class="m-0"><label class="m-0" for="">Weight </label><span>:&nbsp;&nbsp;{{item.weight}}</span></p>
-            <div class="butonsDiv d-flex justify-content-between pt-1 pb-1">
-              <a (click)="gotestPage(item)"><u>Test</u></a>
-              <a (click)="goworkPage(item)"><u>Workout</u></a>
-            </div>
+          (onScrollUp)="onScrollUp()"
+          (onScrollDown)="onScrollDown()">
+        <div class="innerlists" *ngFor="let item of tenRecords">
+          <p class="m-0"><label class="m-0" for="" >Name </label><span>:&nbsp;&nbsp;{{item.name}}</span></p>
+          <div class="listdiv">
+            <p class="m-0"><label class="m-0 dashlabel" for="">Gender </label><span>:&nbsp;&nbsp;{{item.gender}}</span></p>
+            <p class="m-0"><label class="m-0 dashlabel" for="" >Id </label><span>:&nbsp;&nbsp;{{item.userid}}</span></p>
+          </div>
+          <div class="listdiv">
+            <p class="m-0"><label class="m-0 dashlabel" for="">Age </label><span>:&nbsp;&nbsp;{{item.age}}</span></p>
+            <p class="m-0"><label class="m-0 dashlabel" for="">Current Weight </label><span>:&nbsp;&nbsp;{{item.weight}}</span></p>
+          </div>
+          <div class="butonsDiv d-flex justify-content-between pt-1 pb-1">
+            <a (click)="gotestPage(item)"><u>Test</u></a>
+            <a (click)="goworkPage(item)"><u>Workout</u></a>
           </div>
         </div>
+        <div class="bgGround" *ngIf = "infinitespinner"></div>
+        <div class="text-center" *ngIf = "infinitespinner"><progress-spinner></progress-spinner></div>
       </div>
     </div>
   </div>
 </div>  
+
+<!-- upload pop up -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">File Upload</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- choose file -->
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="customFileLang" >
+          <label class="custom-file-label" for="customFileLang">Select Files</label>
+        </div>
+        <!-- choose file end -->
+        <div class="row">
+          <div class="col-md-3">Multiple
+            <input type="file" ng2FileSelect [uploader]="uploader" multiple (onFileSelected)="onFileSelected($event)"  /><br/>
+          </div> 
+          <div class="" style="margin-bottom: 40px">
+            <!-- <h3>Upload queue</h3>  -->
+            <p>Queue length: {{ uploader?.queue?.length }}</p>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th width="50%">Name</th>
+                  <th>Size</th>
+                  <th>Progress</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of uploader.queue">
+                  <td><strong>{{ item?.file?.name }}</strong></td>
+                  <td *ngIf="uploader.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                  <td *ngIf="uploader.isHTML5">
+                      <div class="progress" style="margin-bottom: 0;">
+                          <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+                      </div>
+                  </td>
+                  <td class="text-center">
+                      <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                      <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                      <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                  </td>
+                  <td nowrap>
+                    <button type="button" class="btn btn-success btn-xs"
+                        (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                        <span class="glyphicon glyphicon-upload"></span> Upload
+                    </button>
+                    <button type="button" class="btn btn-warning btn-xs"
+                            (click)="item.cancel()" [disabled]="!item.isUploading">
+                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger btn-xs"
+                            (click)="item.remove()">
+                        <span class="glyphicon glyphicon-trash"></span> Remove
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+     
+            <div>
+              <div>Queue progress:
+                <div class="progress" style="">
+                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                </div>
+              </div>
+                <button type="button" class="btn btn-success btn-s"
+                        (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                    <span class="glyphicon glyphicon-upload"></span> Upload all
+                </button>
+                <button type="button" class="btn btn-warning btn-s"
+                        (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+                </button>
+                <button type="button" class="btn btn-danger btn-s"
+                        (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                    <span class="glyphicon glyphicon-trash"></span> Remove all
+                </button>
+                </div>
+            </div>
+        </div>
+        <!--  -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Upload Files</button>
+      </div>
+    </div>
+  </div>
+</div>

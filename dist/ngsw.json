@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1573809433251,
+  "timestamp": 1574928523792,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -8,13 +8,13 @@
       "installMode": "prefetch",
       "updateMode": "prefetch",
       "urls": [
-        "/4.4075e84884e65e6fc997.js",
+        "/4.c1192ed8a1bd657b53f3.js",
         "/favicon.ico",
         "/index.html",
-        "/main.80b54be1a3c81c35b6b1.js",
+        "/main.17084e666efd28548d40.js",
         "/polyfills.bebee6a5ef0ece001bc6.js",
-        "/runtime.a99699f3c63fc7177acd.js",
-        "/styles.599942cb8773ce03ec01.css"
+        "/runtime.eb4ef6385b6f20b28548.js",
+        "/styles.e13d09b22810d2b4c752.css"
       ],
       "patterns": []
     },
@@ -56,6 +56,7 @@
         "/assets/images/dashboard/img_2.jpg",
         "/assets/images/dashboard/img_3.jpg",
         "/assets/images/dashboard/img_4.jpg",
+        "/assets/images/excel-icon.png",
         "/assets/images/faces-clipart/pic-1.png",
         "/assets/images/faces-clipart/pic-2.png",
         "/assets/images/faces-clipart/pic-3.png",
@@ -272,7 +273,7 @@
   ],
   "dataGroups": [],
   "hashTable": {
-    "/4.4075e84884e65e6fc997.js": "d9628fbd965de4f12b0715144078b09b6d090116",
+    "/4.c1192ed8a1bd657b53f3.js": "0dfa809a45d818f49c4714479259d6d67fc34514",
     "/assets/fonts/PT_Sans/OFL.txt": "65f077d0aa603b64873b450999f9767e7cb92875",
     "/assets/fonts/PT_Sans/PTSans-Bold.eot": "b4812fc213bd03e58f6a8bbf565b5cd0ea44b28a",
     "/assets/fonts/PT_Sans/PTSans-Bold.ttf": "aeb223e20dea7e777a7f8ce7340ffe79be928f9b",
@@ -306,6 +307,7 @@
     "/assets/images/dashboard/img_2.jpg": "5ac73fb1bc70b9bf021ced9e6765ead30e263ec9",
     "/assets/images/dashboard/img_3.jpg": "6bce39ff46bd32196706fa29ced3356313a4148f",
     "/assets/images/dashboard/img_4.jpg": "f953027f824052ad2873fc2e498588fd3bcdbb7b",
+    "/assets/images/excel-icon.png": "dc65b77479d147611d367f3dd22589d795d21b1b",
     "/assets/images/faces-clipart/pic-1.png": "15ae38e58b64aa1d502fbe4057b17404b851dc28",
     "/assets/images/faces-clipart/pic-2.png": "867ee8db3a78fbf702173b75fa6ecd0741adb97e",
     "/assets/images/faces-clipart/pic-3.png": "4463e700814fc8da4ed6e415371540d44e1b7f5b",
@@ -477,7 +479,7 @@
     "/assets/styles/_forms.scss": "4718445b1f260d265c355ed8fe020cea6e0b607b",
     "/assets/styles/_functions.scss": "937abd0668e930c077a5f1786ca4609889888212",
     "/assets/styles/_icons.scss": "c0ba6ed75771848daee81ba56858c7401877d753",
-    "/assets/styles/_layouts.scss": "1023ca90662176efd372667d46796b346f3ee5df",
+    "/assets/styles/_layouts.scss": "e1399ebb533f7db707a449297d318fcc68904ec5",
     "/assets/styles/_lists.scss": "dd19fe0b71cd0bf42cc7c059e04a2996a52ca3e7",
     "/assets/styles/_misc.scss": "9d35888acffd6d578ffc8a0bdcc6c852822e31d3",
     "/assets/styles/_modals.scss": "afea90734d67962e1539472221529f198a21722c",
@@ -512,16 +514,16 @@
     "/fontawesome-webfont.af7ae505a9eed503f8b8.woff2": "d6f48cba7d076fb6f2fd6ba993a75b9dc1ecbf0c",
     "/fontawesome-webfont.b06871f281fee6b241d6.ttf": "13b1eab65a983c7a73bc7997c479d66943f7c6cb",
     "/fontawesome-webfont.fee66e712a8a08eef580.woff": "28b782240b3e76db824e12c02754a9731a167527",
-    "/index.html": "fae771c45068785cc332054b4c9c4145a2d53875",
-    "/main.80b54be1a3c81c35b6b1.js": "20a251b54a0338ef8e9e7b603dfc5cd0e6dcbf68",
+    "/index.html": "04fa4b070d4b505a2aa53ba99b88c3a208b0ce18",
+    "/main.17084e666efd28548d40.js": "2966ac68b4f4acd0c97a5c93281e7b21978efdb3",
     "/materialdesignicons-webfont.07c3c549e00186f1c175.svg": "9d0220c3cb2ac6d13872896a13493cfd752d7870",
     "/materialdesignicons-webfont.32562ea54b66a048a7d0.woff2": "5d7448c06c8a929df1eac0005bc167465d237074",
     "/materialdesignicons-webfont.40f483d6f7ef034dee11.woff": "f52f3bcb74bf0ff36bef6b233666d5b3af85ae02",
     "/materialdesignicons-webfont.a33808e1480bbdc1273c.ttf": "2e54451503ca43c9fbb83503e4b6616e1c780d11",
     "/materialdesignicons-webfont.c28acdf1c1f9c45ff40b.eot": "1e63c70ceda2b7c8806ea471f5557f05e13bd569",
     "/polyfills.bebee6a5ef0ece001bc6.js": "6946e10a03311677a01490b8e91741668e64e17e",
-    "/runtime.a99699f3c63fc7177acd.js": "1ea6cfa6f166343b2b2d27c588fccf335231becb",
-    "/styles.599942cb8773ce03ec01.css": "5e27bcba4072710d2cf911d0b2f8bf4e9ae33d62"
+    "/runtime.eb4ef6385b6f20b28548.js": "7fc81d861764246be2cc6b6b6c6615af5be11190",
+    "/styles.e13d09b22810d2b4c752.css": "aea1658a86eeb40375c8e624ff21607f3e759068"
   },
   "navigationUrls": [
     {

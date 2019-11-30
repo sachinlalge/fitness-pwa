@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation,  ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, EventEmitter, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ExcelService } from 'src/app/service/excel-service/excel.service';
 import { GetAllUsersService } from '../../service/get-all-users/get-all-users.service';
@@ -6,6 +6,8 @@ import { PassServiceService } from '../../service/pass-service/pass-service.serv
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from 'ngx-toastr';
 import { msg } from '../../../messages';
+import { HostListener } from "@angular/core";
+import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,23 +18,27 @@ import { msg } from '../../../messages';
 })
 export class DashboardComponent implements OnInit {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+  // @HostListener('window:resize', ['$event'])
+
+  scrHeight:any;
+  scrWidth:any;
 
   userlist: any = [];
-  userlist1: any = [
-    { id: 1, name: 'Scarlett Johansson', gender: 'Female', age: '2019', weight: '67' },
-    { id: 3, name: 'Morena Baccarin ', gender: 'Female', age: '2018', weight: '98' },
-    { id: 9, name: 'Chris Hemsworth ', gender: 'Male', age: '2018', weight: '59' },
-    { id: 5, name: 'Sophie Turner', gender: 'Female', age: '2019', weight: '20' },
-    { id: 9, name: 'Don Cheadle ', gender: 'Male', age: '2018', weight: '59' },
-    { id: 6, name: 'Simone Missick ', gender: 'Female', age: '2018', weight: '45' },
-    { id: 7, name: ' Samuel L. Jackson ', gender: 'Male', age: '2019', weight: '73' },
-    { id: 8, name: 'Robert Downey Jr. ', gender: 'Male', age: '2019', weight: '82' },
-    { id: 9, name: 'Paul Bettany ', gender: 'Male', age: '2018', weight: '59' },
-    { id: 4, name: 'Emma Stone ', gender: 'Female', age: '2019', weight: '90' },
-    { id: 9, name: 'Chris Evans ', gender: 'Male', age: '2018', weight: '59' },
-    { id: 2, name: 'Elizabeth Olsen ', gender: 'Female', age: '2018', weight: '43' },
-    { id: 9, name: 'Jon Favreau ', gender: 'Male', age: '2018', weight: '59' },
-  ];
+  // userlist1: any = [
+  //   { id: 1, name: 'Scarlett Johansson', gender: 'Female', age: '2019', weight: '67' },
+  //   { id: 3, name: 'Morena Baccarin ', gender: 'Female', age: '2018', weight: '98' },
+  //   { id: 9, name: 'Chris Hemsworth ', gender: 'Male', age: '2018', weight: '59' },
+  //   { id: 5, name: 'Sophie Turner', gender: 'Female', age: '2019', weight: '20' },
+  //   { id: 9, name: 'Don Cheadle ', gender: 'Male', age: '2018', weight: '59' },
+  //   { id: 6, name: 'Simone Missick ', gender: 'Female', age: '2018', weight: '45' },
+  //   { id: 7, name: ' Samuel L. Jackson ', gender: 'Male', age: '2019', weight: '73' },
+  //   { id: 8, name: 'Robert Downey Jr. ', gender: 'Male', age: '2019', weight: '82' },
+  //   { id: 9, name: 'Paul Bettany ', gender: 'Male', age: '2018', weight: '59' },
+  //   { id: 4, name: 'Emma Stone ', gender: 'Female', age: '2019', weight: '90' },
+  //   { id: 9, name: 'Chris Evans ', gender: 'Male', age: '2018', weight: '59' },
+  //   { id: 2, name: 'Elizabeth Olsen ', gender: 'Female', age: '2018', weight: '43' },
+  //   { id: 9, name: 'Jon Favreau ', gender: 'Male', age: '2018', weight: '59' },
+  // ];
   p: number = 1;
   arrow = false;
   isDesc: any = [];
@@ -40,6 +46,8 @@ export class DashboardComponent implements OnInit {
   search:any={};
   dataObjforExcel: any = [];
   dataArrayforExcel: any = [];
+  tenRecords: any = [];
+  infinitespinner: boolean = false;
 
   constructor(
     private router: Router, 
@@ -50,7 +58,7 @@ export class DashboardComponent implements OnInit {
     private toastr: ToastrService,
     private cdf: ChangeDetectorRef
   ) {
-    
+    this.getScreenSize();
   }
 
   ngOnInit() {
@@ -61,6 +69,11 @@ export class DashboardComponent implements OnInit {
     // }, 1000);
   }
 
+  getScreenSize(event?) {
+    this.scrHeight = window.innerHeight;
+    this.scrWidth = window.innerWidth;
+    console.log('screen height', this.scrWidth);
+  }
 
   // sort 
   sort(property) {
@@ -84,7 +97,7 @@ export class DashboardComponent implements OnInit {
     this.dataArrayforExcel = [];
     for (let i = 0; i < this.userlist.length; i++) {
       this.dataObjforExcel = {
-        // 'ID': this.userlist[i].id,
+        'ID': this.userlist[i].id,
         'NAME': this.userlist[i].name,
         'GENDER': this.userlist[i].gender,
         'AGE': this.userlist[i].age,
@@ -126,19 +139,19 @@ export class DashboardComponent implements OnInit {
           try {
           this.userlist = res.data;
           // console.log('this.userlist',this.userlist);
-          // this.setveractive = false;
+          for(let i = 0; i < this.userlist.length; i++) {
+            if(i < 10) {
+              this.tenRecords.push(this.userlist[i]);
+              // console.log('ten records', this.tenRecords);
+            }
+          }
           } catch (e) {
             console.log(e);
           }
         }
         if (res.type === false) {
           this.spinner.hide();
-          console.log('res', res);
-          // if(this.featureList.length === 0){
-          //   this.featureLength = false;
-          // } else if(this.featureList.length > 0){
-          //   this.featureLength = true;
-          // }
+          // console.log('res', res);
         }
       } catch (e) {
         console.log(e);
@@ -154,7 +167,60 @@ export class DashboardComponent implements OnInit {
   }
 
   onScrollUp() {
-    this.userlist = this.userlist.concat(this. getUsers());
+    // this.tenRecords = this.tenRecords.concat(this.getUsers());
+    console.log();
+  }
+
+  onScrollDown() {
+    var startint = this.tenRecords.length;
+    var endint = this.tenRecords.length +  10;
+    if(this.userlist.length >= startint && !this.infinitespinner){
+      this.infinitespinner = true;
+      var newarray = [];
+      if(this.userlist.length <= endint){
+        endint = this.userlist.length;
+      }
+      for(let i = startint; i < endint; i++) {
+        newarray.push(this.userlist[i]);
+      }
+      
+      setTimeout(() => {
+        this.tenRecords = this.tenRecords.concat(newarray);
+        // console.log("10 records length", this.tenRecords);
+        this.infinitespinner = false;
+      }, 1000);
+    }
+  }
+
+  // upload excel
+  public uploader:FileUploader = new FileUploader({
+    // url: URL, 
+    disableMultipart:true
+    });
+  public hasBaseDropZoneOver:boolean = false;
+  public hasAnotherDropZoneOver:boolean = false;
+
+  fileObject: any;
+
+
+  public fileOverBase(e:any):void {
+    this.hasBaseDropZoneOver = e; 
+  }
+ 
+  public fileOverAnother(e:any):void {
+    this.hasAnotherDropZoneOver = e;
+  }
+
+  public onFileSelected(event: EventEmitter<File[]>) {
+    const file: File = event[0];
+
+    console.log(file);
+
+    // readBase64(file)
+      // .then(function(data) {
+      // console.log(data);
+    // })
+
   }
 
 }

@@ -5,7 +5,9 @@ export class messages {
 }
 
 export const msg = {
-    loginsuc: 'Login Sucssefully !',
+    loginsuc: 'Login Successful !',
     loginerror: 'Login Error !',
     severerror: 'Server Error !',
+    invalidUP: 'Invalid Username or Password',
+    requiredUP: 'Username and Password is required'
 };

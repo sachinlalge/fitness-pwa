@@ -7,9 +7,11 @@
 <div class="d-flow-root text-md-center pl-3 pr-3 pb-3">
   <span class="d-inline text-right d-md-none" (click)="dash.backtoPage()"><i class="fa fa-arrow-left pr-3"></i></span>
   <span class="h4 mb-0 pl-md-5 ml-md-5">Tests</span>
-  <div class="exportExcel float-right">
-    <button class="btn btn-outline-dark mr-md-2" (click)="exportExcel()"><i class="fa fa-file-excel-o mr-0" aria-hidden="true"></i>
-    </button>
+  <div class="float-right d-flex">
+    <!-- <button class="btn btn-outline-dark mr-md-2" (click)="exportExcel()"><i class="fa fa-file-excel-o mr-0" aria-hidden="true"></i></button> -->
+    <div class="excelicon mr-md-2" (click)="exportExcel()">
+      <img src="../../../assets/images/excel-icon.png">
+    </div>
     <button class="btn btn-outline-dark d-none d-md-inline" (click)="dash.backtoPage()">Back</button>
   </div>
 </div>
@@ -24,23 +26,23 @@
       <div class="d-sm-flex justify-content-between align-items-baseline">
         <div class="from-group">
           <ul class="list-inline m-0 nameList">
-            <li class="list-inline-item pr-4">
-              <span class="font-weight-bold"><i class="fa fa-id-badge pr-2"></i>ID: </span>
-              <span class="pl-2">{{userData.userid}}</span> 
-            </li>
-            <li class="list-inline-item pr-4">
+            <li class="list-inline-item pr-md-4">
               <span class="font-weight-bold"><i class="fa fa-user-circle pr-2"></i>Name : </span>
               <span class="pl-2">{{userData.uname}}</span>
             </li>
-            <li class="list-inline-item pr-4">
+            <li class="list-inline-item pr-md-4">
+              <span class="font-weight-bold"><i class="fa fa-id-badge pr-2"></i>ID: </span>
+              <span class="pl-2">{{userData.userid}}</span> 
+            </li>
+            <li class="list-inline-item pr-md-4">
               <span class="font-weight-bold"><i class="fa fa-transgender pr-2"></i>Gender : </span>
               <span class="pl-2">{{userData.gender}}</span>
             </li>
-            <li class="list-inline-item pr-4">
+            <li class="list-inline-item pr-md-4 d-inline-block">
               <span class="font-weight-bold"><i class="fa fa-male pr-2"></i>Age : </span>
               <span class="pl-2">{{userData.age}}</span>
             </li>
-            <li class="list-inline-item pr-4">
+            <li class="list-inline-item pr-md-4 d-inline-block">
               <span class="font-weight-bold"><i class="fa fa-superpowers pr-2"></i>Weight : </span>
               <span class="pl-2">{{userData.weight}}</span>
             </li>
@@ -78,7 +80,7 @@
             <a class="dropdown-item" *ngFor="let type of typeList">{{type.name}}</a>
           </div>
         </div> -->
-          <select class="custom-select custom-select col-3" [(ngModel)]="search.position" (change)="getTestuser()">
+          <select class="custom-select custom-select col-md-3 col-12 d-none" [(ngModel)]="search.position" (change)="getTestuser()">
             <option *ngFor="let type of typeList" value="{{type.value}}">{{type.name}}</option>
           </select>
       </div>
@@ -86,7 +88,7 @@
   </div>
 </div>
 
-<div class="col-lg-12 grid-margin stretch-card">
+<div class="col-lg-12 stretch-card d-none d-md-block">
   <div class="card">
     <div class="card-body">
       <div class="table-responsive">
@@ -98,14 +100,14 @@
                   [ngClass]="{'fa-sort-asc': (column == 'id' && !isDesc) ,'fa-sort-desc': (column == 'id' && isDesc) }"
                   aria-hidden="true"></i>
               </th> -->
-              <th (click)="sort('date')">Date
-                <i class="fa"
-                  [ngClass]="{'fa-sort-asc': (column == 'date' && !isDesc) ,'fa-sort-desc': (column == 'date' && isDesc) }"
-                  aria-hidden="true"></i>
+              <th>Date
+                <!-- <i class="fa"
+                  [ngClass]="{'fa-sort-asc': (column == 'actDate' && !isDesc) ,'fa-sort-desc': (column == 'actDate' && isDesc) }"
+                  aria-hidden="true"></i> -->
               </th>
-              <th (click)="sort('score')">Score
+              <th (click)="sort('CS')">Score
                 <i class="fa"
-                  [ngClass]="{'fa-sort-asc': (column == 'score' && !isDesc) ,'fa-sort-desc': (column == 'score' && isDesc) }"
+                  [ngClass]="{'fa-sort-asc': (column == 'CS' && !isDesc) ,'fa-sort-desc': (column == 'CS' && isDesc) }"
                   aria-hidden="true"></i>
               </th>
               <th></th>
@@ -140,17 +142,33 @@
     <pagination-controls class="text-center" (pageChange)="p = $event"></pagination-controls>
   </div>
 </div>
-<!-- d-none d-md-block -->
 
-<!-- <div class="col-lg-12 grid-margin stretch-card d-md-none">
+<!-- 
+<div class="col-lg-12 grid-margin stretch-card d-md-none">
   <div class="card">
     <div class="card-body">
       <div class="listview">
-        <div class="innerlists" *ngFor="let item of workList">
-          <p class="m-0 border-bottom"><label class="m-0" for="">Date </label><span>:&nbsp;&nbsp;{{item.date}}</span></p>
-          <p class="m-0 border-bottom"><label class="m-0" for="">Score </label><span>:&nbsp;&nbsp;{{item.score}}</span></p>
+        <div class="innerlists" *ngFor="let item of testList">
+          <p class="m-0"><label class="m-0" for="">Date </label><span>:&nbsp;&nbsp;{{item.actDate}}</span></p>
+          <p class="m-0"><label class="m-0" for="">Score </label><span>:&nbsp;&nbsp;{{item.CS}}</span></p>
         </div>
       </div>
     </div>
   </div>
 </div>   -->
+
+<div class="col-lg-12 grid-margin stretch-card d-md-none">
+  <div class="card">
+    <div class="card-body infinite">
+      <div class="listview" ngxInfiniteScroller strategy="scrollingToBoth" 
+      (onScrollDown)="onScrollDown()">
+        <div class="innerlists" *ngFor="let item of tenRecords | filterBy: search">
+          <p class="m-0"><label class="m-0" for="">Date </label><span>:&nbsp;&nbsp;{{item.actDate}}</span></p>
+          <p class="m-0"><label class="m-0" for="">Score </label><span>:&nbsp;&nbsp;{{item.CS}}</span></p>
+        </div>
+        <div class="bgGround" *ngIf = "infinitespinner"></div>
+        <div class="text-center" *ngIf = "infinitespinner"><progress-spinner></progress-spinner></div>
+      </div>
+    </div>
+  </div>
+</div> 

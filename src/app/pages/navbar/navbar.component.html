@@ -13,13 +13,14 @@
     </button> -->
     <ul class="navbar-nav navbar-nav-left header-links d-flex justify-content-between">
       <li class="nav-item">
-          <a href="#" class="nav-link flex-nowrap h5 text-white proname">
-              <i class="mdi mdi-user-outline"></i>Fitness Reports
+          <a class="nav-link flex-nowrap h5 text-white proname m-0">
+              <!-- <i class="mdi mdi-user-outline"></i> -->
+              SMARTcore
           </a>
       </li>
       <li class="nav-item dropdown d-xl-inline-block text-white">
-        <a class="nav-link dropdown-toggle" (click)="dropdownClick()">
-          <span class="profile-text h6 mb-0">User Name</span>
+        <a class="nav-link dropdown-toggle m-0" (click)="dropdownClick()">
+          <span class="profile-text h6 mb-0">Admin</span>
           <img class="img-xs rounded-circle d-none d-md-block" src="assets/images/faces-clipart/pic-3.png" alt="Profile image">
         </a>
         <div class="innerdropdown" (click)="logout()" *ngIf="dropdownOpen">

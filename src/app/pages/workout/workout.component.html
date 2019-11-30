@@ -7,9 +7,11 @@
 <div class="d-flow-root text-md-center pl-3 pr-3 pb-3">
   <span class="d-inline text-right d-md-none" (click)="dash.backtoPage()"><i class="fa fa-arrow-left pr-3"></i></span>
   <span class="h4 mb-0 pl-md-5 ml-md-5">Workouts</span>
-  <div class="exportExcel float-right">
-    <button class="btn btn-outline-dark mr-md-2" (click)="exportExcel()"><i class="fa fa-file-excel-o mr-0" aria-hidden="true"></i>
-    </button>
+  <div class="float-right d-flex">
+    <!-- <button class="btn btn-outline-dark mr-md-2" (click)="exportExcel()"><i class="fa fa-file-excel-o mr-0" aria-hidden="true"></i></button> -->
+    <div class="excelicon mr-md-2" (click)="exportExcel()">
+      <img src="../../../assets/images/excel-icon.png">
+    </div>
     <button class="btn btn-outline-dark d-none d-md-inline" (click)="dash.backtoPage()">Back</button>
   </div>
 </div>
@@ -59,7 +61,7 @@
             <a class="dropdown-item" *ngFor="let type of typeList">{{type.name}}</a>
           </div>
         </div> -->
-        <select class="custom-select custom-select col-3" [(ngModel)]="search.position">
+        <select class="custom-select custom-select mt-2 mt-sm-0 col-md-3 col-12" [(ngModel)]="search.position">
           <option *ngFor="let type of typeList" [ngValue]="type.value">{{type.name}}</option>
        </select>
       </div>
@@ -67,7 +69,7 @@
   </div>
 </div>
 
-<div class="col-lg-12 grid-margin stretch-card d-none d-md-block">
+<div class="col-lg-12 stretch-card d-none d-md-block">
   <div class="card">
     <div class="card-body">
       <div class="table-responsive">
@@ -79,24 +81,24 @@
                   [ngClass]="{'fa-sort-asc': (column == 'id' && !isDesc) ,'fa-sort-desc': (column == 'id' && isDesc) }"
                   aria-hidden="true"></i>
               </th> -->
-              <th (click)="sort('date')">Date
+              <th>Date
+                <!-- <i class="fa"
+                  [ngClass]="{'fa-sort-asc': (column == 'actDate' && !isDesc) ,'fa-sort-desc': (column == 'actDate' && isDesc) }"
+                  aria-hidden="true"></i> -->
+              </th>
+              <th (click)="sort('positionName')">Position
                 <i class="fa"
-                  [ngClass]="{'fa-sort-asc': (column == 'date' && !isDesc) ,'fa-sort-desc': (column == 'date' && isDesc) }"
+                  [ngClass]="{'fa-sort-asc': (column == 'positionName' && !isDesc) ,'fa-sort-desc': (column == 'positionName' && isDesc) }"
                   aria-hidden="true"></i>
               </th>
-              <th (click)="sort('position')">Position
+              <th (click)="sort('leanangle')">Angle
                 <i class="fa"
-                  [ngClass]="{'fa-sort-asc': (column == 'position' && !isDesc) ,'fa-sort-desc': (column == 'position' && isDesc) }"
+                  [ngClass]="{'fa-sort-asc': (column == 'leanangle' && !isDesc) ,'fa-sort-desc': (column == 'leanangle' && isDesc) }"
                   aria-hidden="true"></i>
               </th>
-              <th (click)="sort('angle')">Angle
+              <th (click)="sort('actTime')">Duration
                 <i class="fa"
-                  [ngClass]="{'fa-sort-asc': (column == 'angle' && !isDesc) ,'fa-sort-desc': (column == 'angle' && isDesc) }"
-                  aria-hidden="true"></i>
-              </th>
-              <th (click)="sort('time')">Time
-                <i class="fa"
-                  [ngClass]="{'fa-sort-asc': (column == 'time' && !isDesc) ,'fa-sort-desc': (column == 'time' && isDesc) }"
+                  [ngClass]="{'fa-sort-asc': (column == 'actTime' && !isDesc) ,'fa-sort-desc': (column == 'actTime' && isDesc) }"
                   aria-hidden="true"></i>
               </th>
               <th></th>
@@ -126,9 +128,9 @@
             <tr class="text-center" *ngFor="let item of workList | filterBy: search | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
               <!-- <td>{{ item.id }}</td> -->
               <td>{{ item.actDate }}</td>
-              <td>{{ item.positionName }}</td>
-              <td class="text-right">{{ item.leanangle }}</td>
-              <td class="text-right">{{ item.actTime }}</td>
+              <td class="text-left">{{ item.positionName }}</td>
+              <td>{{ item.leanangle }}</td>
+              <td>{{ item.actTime }}</td>
               <td></td>
             </tr>
           </tbody>
@@ -144,13 +146,20 @@
 <div class="col-lg-12 grid-margin stretch-card d-md-none">
   <div class="card">
     <div class="card-body infinite">
-      <div class="listview">
-        <div class="innerlists" *ngFor="let item of workList | filterBy: search">
-          <p class="m-0"><label class="m-0" for="">Date </label><span>:&nbsp;&nbsp;{{item.actDate}}</span></p>
-          <p class="m-0"><label class="m-0" for="">Position </label><span>:&nbsp;&nbsp;{{item.positionName}}</span></p>
-          <p class="m-0"><label class="m-0" for="">Angle </label><span>:&nbsp;&nbsp;{{item.leanangle}}</span></p>
-          <p class="m-0"><label class="m-0" for="">Time </label><span>:&nbsp;&nbsp;{{item.actTime}}</span></p>
+      <div class="listview" ngxInfiniteScroller strategy="scrollingToBoth" 
+      (onScrollDown)="onScrollDown()">
+        <div class="innerlists" *ngFor="let item of tenRecords | filterBy: search">
+          <div class="listdiv">
+            <p class="m-0"><label class="m-0" for="">Date </label><span>:&nbsp;&nbsp;{{item.actDate}}</span></p>
+            <p class="m-0"><label class="m-0" for="">Position </label><span>:&nbsp;&nbsp;{{item.positionName}}</span></p>
+          </div>
+          <div class="listdiv">
+            <p class="m-0"><label class="m-0" for="">Angle </label><span>:&nbsp;&nbsp;{{item.leanangle}}</span></p>
+            <p class="m-0"><label class="m-0" for="">Duration </label><span>:&nbsp;&nbsp;{{item.actTime}}</span></p>
+          </div>
         </div>
+        <div class="bgGround" *ngIf = "infinitespinner"></div>
+        <div class="text-center" *ngIf = "infinitespinner"><progress-spinner></progress-spinner></div>
       </div>
     </div>
   </div>

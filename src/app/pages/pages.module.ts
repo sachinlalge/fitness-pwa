@@ -16,6 +16,7 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { PagesComponent } from './pages.component';
 import { TestComponent } from './test/test.component';
 import { WorkoutComponent } from './workout/workout.component';
+import { NgxInfiniteScrollerModule } from 'ngx-infinite-scroller';
 
 const PAGES_COMPONENTS = [
   PagesComponent,
@@ -40,6 +41,7 @@ const PAGES_COMPONENTS = [
     NgxPaginationModule,
     FilterPipeModule,
     FormsModule,
+    NgxInfiniteScrollerModule
     // ReactiveFormsModule
   ],
   schemas: [

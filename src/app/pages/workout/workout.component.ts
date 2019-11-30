@@ -50,8 +50,8 @@ export class WorkoutComponent implements OnInit {
     {name: 'Right Lateral', value: 'r'}, 
     {name: 'Left Lateral', value: 'l'},
   ];
-  conentHeight: string;
-  offset: number = 0;
+  tenRecords: any = [];
+  infinitespinner: boolean = false;
 
   constructor(private router: Router,
     public dash: GoToDashboardService,
@@ -64,24 +64,22 @@ export class WorkoutComponent implements OnInit {
       this.search = {
         position: '',
       };
-      this.conentHeight = '0px';
-      this.userData = this.passServ.workoutUser;
-      console.log('WorkuserData', this.userData);
+     
     }
 
-    ngAfterViewInit() {
-      const e = document.getElementsByClassName('infinite');
-      console.log(e[0].clientHeight);
-      this.conentHeight = String(e[0].clientHeight - this.offset) + 'px';
-      console.log('scroll infinte',e);
-    }
    
     ngOnInit() {
-      this.spinner.show();
-      this.getWorkoutUsers();
-      setTimeout(() => {
-        this.spinner.hide();
-      }, 1000);
+      this.userData = this.passServ.workoutUser;
+      console.log('WorkuserData', this.userData);
+      if (!this.userData) {
+        this.router.navigate(['pages/dashboard']);
+      } else if (this.userData) {
+        this.spinner.show();
+        this.getWorkoutUsers();
+        // setTimeout(() => {
+        //   this.spinner.hide();
+        // }, 1000);
+      }
     }
     
     // filter(val) {
@@ -110,10 +108,10 @@ export class WorkoutComponent implements OnInit {
     for (let i = 0; i < this.workList.length; i++) {
       this.dataObjforExcel = {
         // 'ID': this.workList[i].id,
-        'DATE': this.workList[i].date,
-        'POSITION': this.workList[i].position,
-        'ANGLE': this.workList[i].angle,
-        'TIME': this.workList[i].time,
+        'DATE': this.workList[i].actDate,
+        'POSITION': this.workList[i].positionName,
+        'ANGLE': this.workList[i].leanangle,
+        'TIME': this.workList[i].actTime,
       }
       console.log('this.dataArray',this.dataObjforExcel)
       this.dataArrayforExcel.push(this.dataObjforExcel);
@@ -130,27 +128,26 @@ export class WorkoutComponent implements OnInit {
       ucode: this.userData.uname,
     }
     this.workSer.getWorkUsers(data).then(res => {
-      console.log('test res', res);
-    //   this.spinner.hide();
+      // console.log('test res', res);
+      this.spinner.hide();
       try {
         if (res.type === true) {
-          console.log('res', res);
+          // console.log('res', res);
           try {
-          this.workList = res.data;
-          console.log('this.workList',this.workList);
-          // this.setveractive = false;
+            this.workList = res.data;
+            console.log('this.workList',this.workList);
+            for(let i = 0; i < this.workList.length; i++) {
+              if(i < 10) {
+                this.tenRecords.push(this.workList[i]);
+              }
+            }
           } catch (e) {
             console.log(e);
           }
         }
         if (res.type === false) {
-          // this.spinner.hide();
+          this.spinner.hide();
           console.log('res', res);
-          // if(this.featureList.length === 0){
-          //   this.featureLength = false;
-          // } else if(this.featureList.length > 0){
-          //   this.featureLength = true;
-          // }/
         }
       } catch (e) {
         console.log(e);
@@ -158,28 +155,29 @@ export class WorkoutComponent implements OnInit {
     },
     err => {
       console.log(err);
-      // this.spinner.hide();
-      // this.setveractive = true;
-      // this.featureList = [];
       this.toastr.error(msg.severerror);
     });
   }
 
-  // infinte scroll
-  // onScroll(event) {
-  //   let element = this.myScrollContainer.nativeElement;
-  //   // element.style.height = '500px';
-  //   // element.style.height = '500px';
-  //   // Math.ceil(element.scrollHeight - element.scrollTop) === element.clientHeight
-  //   if (element.scrollHeight - element.scrollTop - element.clientHeight < 20) {
-  //       console.log(element);
-  //     // if (!this.isworking) {
-  //       // this.currentPage++;
-  //       // if (this.currentPage <= this.totalPages) {
-  //       //   this.isworking = true;
-  //       //   this.getCategories(this.str, this.currentPage);
-  //       // }
-  //     // }
-  //   }
-  // }
+  onScrollDown() {
+    console.log();
+    var startint = this.tenRecords.length;
+    var endint = this.tenRecords.length +  10;
+    if(this.workList.length >= startint && !this.infinitespinner){
+      this.infinitespinner = true;
+      var newarray = [];
+      if(this.workList.length <= endint){
+        endint = this.workList.length;
+      }
+      for(let i = startint; i < endint; i++) {
+        newarray.push(this.workList[i]);
+      }
+      
+      setTimeout(() => {
+        this.tenRecords = this.tenRecords.concat(newarray);
+        // console.log("10 records length", this.tenRecords);
+        this.infinitespinner = false;
+      }, 1000);
+    }
+  }
 }

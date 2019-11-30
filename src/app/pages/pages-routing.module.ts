@@ -6,6 +6,7 @@ import { BlankRountingComponentComponent } from './components/blank-rounting-com
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TestComponent } from './test/test.component';
 import { WorkoutComponent } from './workout/workout.component';
+// import { TablesComponent } from './tables/tables.component';
 
 const routes: Routes = [{
   path: '',
@@ -13,22 +14,10 @@ const routes: Routes = [{
   children: [
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: 'dashboard', component: DashboardComponent },
-    { path: 'test', component: TestComponent },
+    { path: 'test', component: TestComponent,  },
     { path: 'workout', component: WorkoutComponent  },
-
-  // { path: 'test', loadChildren: 'test/test.module.ts#TestModule' },
-    
-
-    // { path: '', component: BlankRountingComponentComponent,
-    //     children : [
-    //     {path: 'test', component: TestComponent },
-    //     ],
-    // },
-//   {
-//     path: '**',
-//     component: NotFoundComponent,
-//   }
-    ],
+    // { path: 'table', component: TablesComponent  },
+  ]
 }];
 
 @NgModule({

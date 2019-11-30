@@ -16,6 +16,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { ToastrModule } from 'ngx-toastr';
 import { NgxInfiniteScrollerModule } from 'ngx-infinite-scroller';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import {FileUploadModule} from 'ng2-file-upload';
 
 @NgModule({
   declarations: [
@@ -35,8 +37,9 @@ import { NgxInfiniteScrollerModule } from 'ngx-infinite-scroller';
     ToastrModule.forRoot(),
     NgbModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-  ],
-  providers: [],
+    FileUploadModule
+  ], 
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
