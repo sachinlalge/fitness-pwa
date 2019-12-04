@@ -224,10 +224,10 @@
 <div class="d-flow-root text-md-center pl-3 pr-3 pb-md-3 pb-2">
   <span class="h4 mb-0 pl-md-5">Users</span>
   <div class="d-flex float-right">
-    <div class="excelicon mr-md-2" (click)="exportExcel()">
+    <div class="excelicon mr-2" (click)="exportExcel()">
       <img src="../../../assets/images/excel-icon.png">
     </div>
-    <button class="btn btn-outline-dark d-none d-md-inline" data-toggle="modal" data-target="#exampleModalCenter">Upload</button>
+    <button class="btn btn-outline-dark d-md-inline" data-toggle="modal" data-target="#exampleModalCenter">Upload</button>
   </div>
 </div>
 
@@ -342,90 +342,29 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">File Upload</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeUpload()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <!-- choose file -->
-        <div class="custom-file">
-          <input type="file" class="custom-file-input" id="customFileLang" >
-          <label class="custom-file-label" for="customFileLang">Select Files</label>
+        <div class="fileDiv">
+          <ng-container>
+            <input type="file" id="file" multiple class="fileSelected" (change)="getFileDetails($event)">
+            <label class="excelfileInput">
+              <button type="button" class="btn btn-secondary">Choose File</button>    
+              <span class="pl-2">{{this.myFiles.length}} Files Selected</span>          
+            </label>
+          </ng-container>
+          <p class="pt-2 text-danger" *ngIf="showexcelMsg">Please select only .csv files</p>
         </div>
-        <!-- choose file end -->
-        <div class="row">
-          <div class="col-md-3">Multiple
-            <input type="file" ng2FileSelect [uploader]="uploader" multiple (onFileSelected)="onFileSelected($event)"  /><br/>
-          </div> 
-          <div class="" style="margin-bottom: 40px">
-            <!-- <h3>Upload queue</h3>  -->
-            <p>Queue length: {{ uploader?.queue?.length }}</p>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th width="50%">Name</th>
-                  <th>Size</th>
-                  <th>Progress</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of uploader.queue">
-                  <td><strong>{{ item?.file?.name }}</strong></td>
-                  <td *ngIf="uploader.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
-                  <td *ngIf="uploader.isHTML5">
-                      <div class="progress" style="margin-bottom: 0;">
-                          <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
-                      </div>
-                  </td>
-                  <td class="text-center">
-                      <span *ngIf="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
-                      <span *ngIf="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
-                      <span *ngIf="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
-                  </td>
-                  <td nowrap>
-                    <button type="button" class="btn btn-success btn-xs"
-                        (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                        <span class="glyphicon glyphicon-upload"></span> Upload
-                    </button>
-                    <button type="button" class="btn btn-warning btn-xs"
-                            (click)="item.cancel()" [disabled]="!item.isUploading">
-                        <span class="glyphicon glyphicon-ban-circle"></span> Cancel
-                    </button>
-                    <button type="button" class="btn btn-danger btn-xs"
-                            (click)="item.remove()">
-                        <span class="glyphicon glyphicon-trash"></span> Remove
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-     
-            <div>
-              <div>Queue progress:
-                <div class="progress" style="">
-                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-                </div>
-              </div>
-                <button type="button" class="btn btn-success btn-s"
-                        (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
-                    <span class="glyphicon glyphicon-upload"></span> Upload all
-                </button>
-                <button type="button" class="btn btn-warning btn-s"
-                        (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
-                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
-                </button>
-                <button type="button" class="btn btn-danger btn-s"
-                        (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
-                    <span class="glyphicon glyphicon-trash"></span> Remove all
-                </button>
-                </div>
-            </div>
-        </div>
-        <!--  -->
+        <!-- <pre>{{myFiles | json}}</pre> -->
+        <!-- <div *ngFor="let file of myFiles">
+          <div> {{file.name}} - {{file.type}} - {{file.size}}</div> 
+        </div> -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Upload Files</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeUpload()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="uploadFiles()">Upload Files</button>
       </div>
     </div>
   </div>

@@ -19,9 +19,15 @@ import { FileUploader, FileLikeObject } from 'ng2-file-upload';
 export class DashboardComponent implements OnInit {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   // @HostListener('window:resize', ['$event'])
+  // scrHeight:any;
+  // scrWidth:any;
 
-  scrHeight:any;
-  scrWidth:any;
+  
+  myFiles:any = [];
+  sMsg:string = '';
+  // matchTypeXlsx = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+  matchTypeCsv = 'application/vnd.ms-excel';
+  showexcelMsg: boolean = false;
 
   userlist: any = [];
   // userlist1: any = [
@@ -58,7 +64,7 @@ export class DashboardComponent implements OnInit {
     private toastr: ToastrService,
     private cdf: ChangeDetectorRef
   ) {
-    this.getScreenSize();
+    // this.getScreenSize();
   }
 
   ngOnInit() {
@@ -69,11 +75,11 @@ export class DashboardComponent implements OnInit {
     // }, 1000);
   }
 
-  getScreenSize(event?) {
-    this.scrHeight = window.innerHeight;
-    this.scrWidth = window.innerWidth;
-    console.log('screen height', this.scrWidth);
-  }
+  // getScreenSize(event?) {
+  //   this.scrHeight = window.innerHeight;
+  //   this.scrWidth = window.innerWidth;
+  //   console.log('screen height', this.scrWidth);
+  // }
 
   // sort 
   sort(property) {
@@ -193,34 +199,55 @@ export class DashboardComponent implements OnInit {
   }
 
   // upload excel
-  public uploader:FileUploader = new FileUploader({
-    // url: URL, 
-    disableMultipart:true
-    });
-  public hasBaseDropZoneOver:boolean = false;
-  public hasAnotherDropZoneOver:boolean = false;
+  // public uploader:FileUploader = new FileUploader({
+  //   // url: URL, 
+  //   disableMultipart:true
+  //   });
+  // // public hasBaseDropZoneOver:boolean = false;
+  // // public hasAnotherDropZoneOver:boolean = false;
 
-  fileObject: any;
+  // fileObject: any;
 
 
-  public fileOverBase(e:any):void {
-    this.hasBaseDropZoneOver = e; 
-  }
+  // // public fileOverBase(e:any):void {
+  // //   this.hasBaseDropZoneOver = e; 
+  // // }
  
-  public fileOverAnother(e:any):void {
-    this.hasAnotherDropZoneOver = e;
+  // // public fileOverAnother(e:any):void {
+  // //   this.hasAnotherDropZoneOver = e;
+  // // }
+
+  // public onFileSelected(event: EventEmitter<File[]>) {
+  //   const file: File = event[0];
+  //   console.log(file);
+  //   // readBase64(file)
+  //     // .then(function(data) {
+  //     // console.log(data);
+  //   // })
+  // }
+
+  getFileDetails (e) {
+    // console.log (e.target.files);
+    for (var i = 0; i < e.target.files.length; i++) { 
+      if (e.target.files[i].type === this.matchTypeCsv) {
+        this.myFiles.push(e.target.files[i]);
+      }
+      else {
+        this.showexcelMsg = true;
+      }
+    }
+    console.log('filesarray', this.myFiles)
   }
 
-  public onFileSelected(event: EventEmitter<File[]>) {
-    const file: File = event[0];
-
-    console.log(file);
-
-    // readBase64(file)
-      // .then(function(data) {
-      // console.log(data);
-    // })
-
+  closeUpload() {
+    this.myFiles = '';
   }
+
+  // uploadFiles () {
+  //   const frmData = new FormData();
+  //   for (var i = 0; i < this.myFiles.length; i++) { 
+  //     frmData.append("fileUpload", this.myFiles[i]);
+  //   }
+  // }
 
 }
