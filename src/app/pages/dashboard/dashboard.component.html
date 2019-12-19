@@ -349,7 +349,7 @@
       <div class="modal-body">
         <div class="fileDiv">
           <ng-container>
-            <input type="file" id="file" multiple class="fileSelected" (change)="getFileDetails($event)">
+            <input type="file" #file id="file" accept=".csv, .CSV" multiple class="fileSelected" (change)="getFileDetails($event)">
             <label class="excelfileInput">
               <button type="button" class="btn btn-secondary">Choose File</button>    
               <span class="pl-2">{{this.myFiles.length}} Files Selected</span>          
@@ -364,7 +364,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeUpload()">Close</button>
-        <button type="button" class="btn btn-primary" (click)="uploadFiles()">Upload Files</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="uploadFiles()" [disabled]="myFilesflag" >Upload Files</button>
       </div>
     </div>
   </div>

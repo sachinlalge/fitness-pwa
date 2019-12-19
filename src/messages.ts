@@ -9,5 +9,7 @@ export const msg = {
     loginerror: 'Login Error !',
     severerror: 'Server Error !',
     invalidUP: 'Invalid Username or Password',
-    requiredUP: 'Username and Password is required'
+    requiredUP: 'Username and Password is required',
+    filupsucc: 'File uploaded successfully',
+    errfilecount: 'Files are not in required Format'
 };

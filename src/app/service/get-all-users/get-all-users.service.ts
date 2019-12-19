@@ -11,10 +11,22 @@ export class GetAllUsersService {
   private headers = new HttpHeaders();
   getallUsersUrl = this.baseUrl + webApi.apiUrl.getallUsers;
 
+  uploadReportsFileUrl = this.baseUrl + webApi.apiUrl.uploadReportsFile;
+
   constructor(public http: HttpClient) {  }
 
   public getUsers(): Promise<any> {
     return this.http.post(this.getallUsersUrl, { headers: this.headers })
+      .toPromise()
+      .then(response => {
+        return response = response;
+      })
+      .catch(this.handleError);
+  }
+
+  public uploadReportsFile(msrData: any): Promise<any> {
+
+    return this.http.post(this.uploadReportsFileUrl, msrData, { headers: this.headers })
       .toPromise()
       .then(response => {
         return response = response;

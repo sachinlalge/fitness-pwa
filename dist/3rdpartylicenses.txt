@@ -409,6 +409,8 @@ MIT
 @angular/service-worker
 MIT
 
+ng2-file-upload
+
 ngx-infinite-scroller
 MIT
 

@@ -21,9 +21,10 @@ export class DashboardComponent implements OnInit {
   // @HostListener('window:resize', ['$event'])
   // scrHeight:any;
   // scrWidth:any;
-
+  @ViewChild('file') private myInputVariable: ElementRef;
   
   myFiles:any = [];
+  myFilesflag :boolean = true;
   sMsg:string = '';
   // matchTypeXlsx = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
   matchTypeCsv = 'application/vnd.ms-excel';
@@ -56,8 +57,8 @@ export class DashboardComponent implements OnInit {
   infinitespinner: boolean = false;
 
   constructor(
-    private router: Router, 
-    private excelService: ExcelService, 
+    private router: Router,
+    private excelService: ExcelService,
     private getUsersServ: GetAllUsersService,
     private passServ: PassServiceService,
     private spinner: NgxSpinnerService,
@@ -81,7 +82,7 @@ export class DashboardComponent implements OnInit {
   //   console.log('screen height', this.scrWidth);
   // }
 
-  // sort 
+  // sort
   sort(property) {
     this.isDesc = !this.isDesc; // change the direction
     this.column = property;
@@ -98,7 +99,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  
   exportExcel() {
     this.dataArrayforExcel = [];
     for (let i = 0; i < this.userlist.length; i++) {
@@ -178,18 +178,17 @@ export class DashboardComponent implements OnInit {
   }
 
   onScrollDown() {
-    var startint = this.tenRecords.length;
-    var endint = this.tenRecords.length +  10;
-    if(this.userlist.length >= startint && !this.infinitespinner){
+    let startint = this.tenRecords.length;
+    let endint = this.tenRecords.length +  10;
+    if (this.userlist.length >= startint && !this.infinitespinner){
       this.infinitespinner = true;
-      var newarray = [];
-      if(this.userlist.length <= endint){
+      let newarray = [];
+      if (this.userlist.length <= endint){
         endint = this.userlist.length;
       }
-      for(let i = startint; i < endint; i++) {
+      for (let i = startint; i < endint; i++) {
         newarray.push(this.userlist[i]);
       }
-      
       setTimeout(() => {
         this.tenRecords = this.tenRecords.concat(newarray);
         // console.log("10 records length", this.tenRecords);
@@ -231,23 +230,63 @@ export class DashboardComponent implements OnInit {
     for (var i = 0; i < e.target.files.length; i++) { 
       if (e.target.files[i].type === this.matchTypeCsv) {
         this.myFiles.push(e.target.files[i]);
+        this.myFilesflag = false;
       }
       else {
         this.showexcelMsg = true;
       }
     }
-    console.log('filesarray', this.myFiles)
+    console.log('filesarray', this.myFiles);
   }
 
   closeUpload() {
-    this.myFiles = '';
+    console.log(this.myInputVariable.nativeElement.files);
+    this.myInputVariable.nativeElement.value = '';
+    console.log(this.myInputVariable.nativeElement.files);
+    // files = null;
+    this.myFiles = [];
+    this.myFilesflag = true;
   }
 
-  // uploadFiles () {
-  //   const frmData = new FormData();
-  //   for (var i = 0; i < this.myFiles.length; i++) { 
-  //     frmData.append("fileUpload", this.myFiles[i]);
-  //   }
-  // }
+  uploadFiles () {
+    this.spinner.show();
+    const frmData = new FormData();
+    for (let i = 0; i < this.myFiles.length; i++) {
+      frmData.append("files", this.myFiles[i]);
+    }
+    this.getUsersServ.uploadReportsFile(frmData).then(res => {
+      try {
+        this.myInputVariable.nativeElement.value = '';
+        this.myFiles = [];
+        this.myFilesflag = true;
+        this.spinner.hide();
+        if (res.error_code === 0) {
+          this.getUsers();
+          console.log('res', res);
+          if (res.errfile === 0) {
+            this.toastr.success(msg.filupsucc);
+          } else {
+            this.toastr.error( res.errfile + ' ' + msg.errfilecount);
+          }
+        }
+        if (res.error_code === 1) {
+          this.myFiles = [];
+          this.myFilesflag = true;
+          console.log('res', res);
+          this.toastr.error(res.err_desc);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    err => {
+      this.myInputVariable.nativeElement.value = '';
+      this.myFiles = [];
+      this.myFilesflag = true;
+      console.log(err);
+      this.spinner.hide();
+      this.toastr.error(msg.severerror);
+    });
+  }
 
 }
