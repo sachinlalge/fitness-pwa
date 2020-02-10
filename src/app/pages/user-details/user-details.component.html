@@ -1,0 +1,150 @@
+
+<div class="d-flow-root text-md-center pl-3 pr-3 pb-3">
+  <span class="d-inline text-right d-md-none" (click)="dash.gotoTestpage()"><i class="fa fa-arrow-left pr-3"></i></span>
+  <span class="h4 mb-0 pl-md-5 ml-md-5">User Details</span>
+  <div class="float-right d-flex">
+    <div class="excelicon mr-md-2" (click)="exportExcel()">
+      <img src="../../../assets/images/excel-icon.png">
+    </div>
+    <button class="btn btn-outline-dark d-none d-md-inline" (click)="dash.gotoTestpage()">Back</button>
+  </div>
+</div>
+  
+<div class="col-lg-12 grid-margin stretch-card">
+  <div class="card">
+    <div class="card-body">
+      <div class="d-sm-flex justify-content-between align-items-baseline">
+        <div class="from-group">
+          <ul class="list-inline m-0 nameList">
+            <li class="list-inline-item pr-4">
+              <span class="font-weight-bold"><i class="fa fa-id-badge pr-2"></i>ID: </span>
+              <span class="pl-2">{{user.ufid}}</span> 
+            </li>
+            <li class="list-inline-item pr-4">
+              <span class="font-weight-bold"><i class="fa fa-user-circle pr-2"></i>Name : </span>
+              <span class="pl-2">{{user.uname}}</span>
+            </li>
+            <li class="list-inline-item pr-4">
+              <span class="font-weight-bold"><i class="fa fa-transgender pr-2"></i>Gender : </span>
+              <span class="pl-2">{{user.gender}}</span>
+            </li>
+            <li class="list-inline-item pr-4">
+              <span class="font-weight-bold"><i class="fa fa-male pr-2"></i>Age : </span>
+              <span class="pl-2">{{user.age}}</span>
+            </li>
+            <li class="list-inline-item pr-4">
+              <span class="font-weight-bold"><i class="fa fa-superpowers pr-2"></i>Weight : </span>
+              <span class="pl-2">{{user.weight}}</span>
+            </li>
+            <li class="list-inline-item pr-4">
+              <span class="font-weight-bold"><i class="fa fa-sort-amount-asc pr-2"></i>Height : </span>
+              <span class="pl-2">{{user.height}}</span>
+            </li>
+            <li class="list-inline-item pr-4">
+              <span class="font-weight-bold"><i class="fa fa-rocket pr-2"></i>Position : </span>
+              <span class="pl-2">{{user.positionName}}</span>
+            </li>
+            <li class="list-inline-item pr-4">
+              <span class="font-weight-bold"><i class="fa fa-grav pr-2"></i>Lean angle : </span>
+              <span class="pl-2">{{user.leanangle}}</span>
+            </li>
+            <li class="list-inline-item pr-4">
+              <span class="font-weight-bold"><i class="fa fa-window-restore pr-2"></i>Iso Or Dyn : </span>
+              <span class="pl-2">{{user.isoOrdyn}}</span>
+            </li>
+            <li class="list-inline-item pr-4">
+              <span class="font-weight-bold"><i class="fa fa-road pr-2"></i>Wno : </span>
+              <span class="pl-2">{{user.WNo}}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-lg-12 stretch-card d-none d-md-block">
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr class="text-center">
+              <th>Time
+                <!-- <i class="fa"
+                  [ngClass]="{'fa-sort-asc': (column == 'time' && !isDesc) ,'fa-sort-desc': (column == 'time' && isDesc) }"
+                  aria-hidden="true"></i> -->
+              </th>
+              <th>Roll
+                <!-- <i class="fa"
+                  [ngClass]="{'fa-sort-asc': (column == 'roll' && !isDesc) ,'fa-sort-desc': (column == 'roll' && isDesc) }"
+                  aria-hidden="true"></i> -->
+              </th>
+              <th>Pitch
+                <!-- <i class="fa"
+                  [ngClass]="{'fa-sort-asc': (column == 'pitch' && !isDesc) ,'fa-sort-desc': (column == 'pitch' && isDesc) }"
+                  aria-hidden="true"></i> -->
+              </th>
+              <th>Yaw
+                <!-- <i class="fa"
+                  [ngClass]="{'fa-sort-asc': (column == 'yaw' && !isDesc) ,'fa-sort-desc': (column == 'yaw' && isDesc) }"
+                  aria-hidden="true"></i> -->
+              </th>
+              <th>Press Left
+                <!-- <i class="fa"
+                  [ngClass]="{'fa-sort-asc': (column == 'pressLeft' && !isDesc) ,'fa-sort-desc': (column == 'pressLeft' && isDesc) }"
+                  aria-hidden="true"></i> -->
+              </th>
+              <th>Press Right
+                <!-- <i class="fa"
+                  [ngClass]="{'fa-sort-asc': (column == 'pressRight' && !isDesc) ,'fa-sort-desc': (column == 'pressRight' && isDesc) }"
+                  aria-hidden="true"></i> -->
+              </th>
+              <!-- <th></th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="text-center" *ngFor="let item of userFiles | filterBy: search | paginate: { itemsPerPage: 10, currentPage: p }; let i = index">
+              <td>{{ item.time }}</td>
+              <td>{{ item.roll }}</td>
+              <td>{{ item.pitch }}</td>
+              <td>{{ item.yaw }}</td>
+              <td>{{ item.pressLeft }}</td>
+              <td>{{ item.pressRight }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <pagination-controls class="text-center" (pageChange)="p = $event"></pagination-controls>
+  </div>
+</div>
+
+
+<div class="col-lg-12 grid-margin stretch-card d-md-none">
+  <div class="card">
+    <div class="card-body infinite">
+      <div class="listview" ngxInfiniteScroller strategy="scrollingToBoth" 
+      (onScrollDown)="onScrollDown()">
+        <div class="innerlists" *ngFor="let item of tenRecords | filterBy: search">
+          <div class="listdiv">
+            <p class="m-0"><label class="m-0" for="">Time </label><span>:&nbsp;&nbsp;{{item.time}}</span></p>
+            <p class="m-0"><label class="m-0" for="">Roll </label><span>:&nbsp;&nbsp;{{item.roll}}</span></p>
+          </div>
+          <div class="listdiv">
+            <p class="m-0"><label class="m-0" for="">Pitch </label><span>:&nbsp;&nbsp;{{item.pitch}}</span></p>
+            <p class="m-0"><label class="m-0" for="">Yaw </label><span>:&nbsp;&nbsp;{{item.yaw}}</span></p>
+          </div>
+          <div class="listdiv">
+            <p class="m-0"><label class="m-0" for="">Press Left </label><span>:&nbsp;&nbsp;{{item.pressLeft}}</span></p>
+          </div>
+          <div class="listdiv">
+            <p class="m-0"><label class="m-0" for="">Press Right </label><span>:&nbsp;&nbsp;{{item.pressRight}}</span></p>
+          </div>
+        </div>
+        <div class="bgGround" *ngIf = "infinitespinner"></div>
+        <div class="text-center" *ngIf = "infinitespinner"><progress-spinner></progress-spinner></div>
+      </div>
+    </div>
+  </div>
+</div> 

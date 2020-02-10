@@ -13,4 +13,7 @@ export class GoToDashboardService {
   backtoPage() {
     this.router.navigate(['pages/dashboard']);
   }
+  gotoTestpage() {
+    this.router.navigate(['pages/test']);
+  }
 }

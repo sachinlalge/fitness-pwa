@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class PassServiceService {
   testUser: any;
   workoutUser: any;
-
+  userDetail: any;
+  
   constructor() { }
 }

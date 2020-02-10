@@ -91,8 +91,7 @@ export class TestComponent implements OnInit {
 
   filter(val) {
     this.dropdownName = val;
-  }
-  
+  }                                       
 
   // sort 
   sort(property) {
@@ -135,6 +134,11 @@ export class TestComponent implements OnInit {
     this.excelService.exportAsExcelFile(this.dataArrayforExcel, 'Details');
   }
 
+  gotoUserDetails(data) {
+    this.passServ.userDetail = data;
+    this.router.navigate(['pages/user-details']);    
+  }
+
   getTestuser() {
     const data = {
       ucode: this.userData.uname,
@@ -146,9 +150,9 @@ export class TestComponent implements OnInit {
       this.spinner.hide();
       try {
         if (res.type === true) {
-          // console.log('res', res);
           try {
             this.testList = res.data;
+            console.log('testList', this.testList);
             for(let i = 0; i < this.testList.length; i++) {
               if(i < 10) {
                 this.tenRecords.push(this.testList[i]);
